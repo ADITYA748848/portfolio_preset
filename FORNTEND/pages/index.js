@@ -35,7 +35,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>vbmcoder - Personal Portfolio</title>
+        <title>AdityaRaj - Personal Portfolio</title>
         <meta name="description" content="vbmcoder - Personal Portfolio" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="shortcut icon" type="image/png" href="/favicon.png" />
@@ -53,7 +53,7 @@ export default function Home() {
           <div className="flex w-100">
             <div className="heroinfoleft">
               <span className="hero_sb_title">I am Aditya</span>
-              <h1 className="hero_title">Web Devloper + <br/> <span className=" typed-text"> Ux Designer</span></h1>
+              <h1 className="hero_title">App Developer + <br/> <span className=" typed-text"> Web Developer</span></h1>
               <div className="hero_img_box heroimgbox">
                 <img src="/img/ me.jpg"alt="coder"/>
                 
@@ -92,13 +92,13 @@ export default function Home() {
               
             </div>
             <div className="funfect_item">
-              <h3>12+</h3>
+              <h3>6+</h3>
               <h4> OpenSource <br/>
                 Library </h4>
               
             </div>
             <div className="funfect_item">
-              <h3>40+</h3>
+              <h3>4+</h3>
               <h4>Happy <br/>
               Customers</h4>
               
