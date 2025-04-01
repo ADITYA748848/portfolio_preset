@@ -4,8 +4,18 @@ import  { BiDownload} from "react-icons/bi";
 import { FaGithub, FaTwitter } from "react-icons/fa6";
 import { GrLinkedinOption } from "react-icons/gr";
 import { LiaBasketballBallSolid } from "react-icons/lia";
+import { GoArrowUpRight } from "react-icons/go";
+import { useState } from "react";
 
 export default function Home() {
+  // active service background color
+  const [activeIndex,setActiveIndex] = useState(0);
+  const handleHower= (index)=>{
+
+  }
+  const handleMouseOut =() =>{
+    setActiveIndex(0); // set the first item as
+  }
 
 
 
@@ -38,7 +48,8 @@ export default function Home() {
         <title>vbmcoder - Personal Portfolio</title>
         <meta name="description" content="vbmcoder - Personal Portfolio" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="shortcut icon" type="image/png" href="/favicon.png" />
+        <link rel="shortcut icon" type="image/png" href="/favicon.png" crossOrigin="anonymous" /> 
+        {/* <link rel="shortcut icon" type="image/png" href="/favicon.png" /> */}
       </Head>
 
       {/* hero section */}
@@ -55,7 +66,7 @@ export default function Home() {
               <span className="hero_sb_title">I am Aditya</span>
               <h1 className="hero_title">Web Devloper + <br/> <span className=" typed-text"> Ux Designer</span></h1>
               <div className="hero_img_box heroimgbox">
-                <img src="/img/ me.jpg"alt="coder"/>
+                <img src="/img/me.jpg"alt="coder"/>
                 
               </div> 
               <div className=" lead"> I break down complex user experience problems to create integritiy focussed solution that connect billions of people .</div>
@@ -118,7 +129,31 @@ export default function Home() {
               <h2>MY Quality services</h2>
               <p> We put your ideas and thus your wishes in the form of a unique web project that inspires you and you customers . </p>
             </div>
-            <div className="services_menu"></div>
+            <div className="services_menu">
+              {services.map((service, index) =>(
+                <div key ={index} 
+                className={`services_item ${activeIndex === index ? 'sactive' : ''}`}
+                onMouseOver={() => handleHower(index)}
+                onMouseOut={handleMouseOut}
+
+
+                >
+                  <div className="left_s_box">
+                    <span>0 {index + 1}</span>
+                    <h3>{service.title}</h3>
+                    
+
+                  </div>
+                  <div className="right_s_box">
+                    <p>{service.description}</p>
+
+                  </div>
+                  <GoArrowUpRight/>
+
+
+                </div>
+              ))}
+            </div>
           </div>
         </div>
         
@@ -126,6 +161,11 @@ export default function Home() {
 
       {/* Projects */}
       <section className="projects">
+        <div className="container">
+          <div className="project_titles"></div>
+        </div>
+          
+        
        
       </section>
 
