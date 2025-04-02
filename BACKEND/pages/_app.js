@@ -13,7 +13,12 @@ export default function App({ Component, pageProps }) {
 
 
   return <>
-  <ParentComponent appOpen={asideOpen} appAsideOpen={AsideClickOpen} />
-    <Component {...pageProps} />
+    <ParentComponent appOpen={asideOpen} appAsideOpen={AsideClickOpen} />
+    <main>
+      <div className={asideOpen ? 'container' : 'container active'}>
+        <Component {...pageProps} />
+      </div>
+    </main>
+
   </>
 }
