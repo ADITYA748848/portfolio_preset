@@ -6,6 +6,7 @@ import { GrLinkedinOption } from "react-icons/gr";
 import { LiaBasketballBallSolid } from "react-icons/lia";
 import { GoArrowUpRight } from "react-icons/go";
 import { useEffect, useState } from "react";
+import Spinner from "@/components/Spinner";
 
 export default function Home() {
 
@@ -203,7 +204,7 @@ export default function Home() {
           <div className="projects_cards">
             {loading ? <Spinner/> : (
               setAlldata.slice(0,4).map((pro) =>(
-
+                <Link></Link>
               ))
 
             )}

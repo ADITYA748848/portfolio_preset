@@ -7,6 +7,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { ReactSortable } from 'react-sortablejs';
+import { MdDeleteForever } from "react-icons/md";
 
 export default function Blog(
     {
@@ -20,9 +22,9 @@ export default function Blog(
 
     const [title, setTitle] = useState('');
     const [slug, setslug] = useState('');
-    const [images, setimages] = useState('');
+    const [images, setimages] = useState([]);
     const [description, setdescription] = useState('');
-    const [blogcategory, setblogcategory] = useState('');
+    const [blogcategory, setblogcategory] = useState([]);
     const [tags, settags] = useState('');
     const [status, setstatus] = useState('');
 
@@ -36,13 +38,13 @@ export default function Blog(
             await Promise.all(uploadImagesQueue)
         }
 
-        const data = {title, slug, images, description, blogcategory, tags, status};
+        const data = { title, slug, images, description, blogcategory, tags, status };
 
         if (_id) {
-            await axios.put('/api/blogs', {...data, _id})
+            await axios.put('/api/blogs', { ...data, _id })
             toast.success('Data Updated')
             router.push('/blogs')
-        }else{
+        } else {
             await axios.post('/api/blogs', data)
             toast.success('Blogs Created')
             router.push('/blogs')
@@ -52,13 +54,45 @@ export default function Blog(
         setRedirect(true);
     };
 
-    async function uploadImages(ev){
-        
+    async function uploadImages(ev) {
+        const files = ev.target?.files;
+        if (files?.length > 0) {
+            setIsUploading(true)
+
+            for (const file of files) {
+                const data = new FormData();
+                data.append('file', file)
+
+                uploadImagesQueue.push(
+                    axios.post('/api/upload', data).then(res => {
+                        setimages(oldImages => [...oldImages, ...res.data.links])
+                    })
+                )
+            }
+
+            await Promise.all(uploadImagesQueue);
+
+            setIsUploading(false)
+            toast.success('Images Uploaded')
+        } else {
+            toast.error('An error occurred!')
+        }
     }
 
     if (redirect) {
         router.push('/blogs')
         return null;
+    }
+
+    function updateImagesOrder(images) {
+        setimages(images)
+    }
+
+    function handleDeleteImage(index) {
+        const updateImages = [...images];
+        updateImages.splice(index, 1);
+        setimages(updateImages);
+        toast.success('Image Deleted Successfully')
     }
 
     const handleSlugChange = (ev) => {
@@ -73,22 +107,22 @@ export default function Blog(
         <form className='addWebsiteform' onSubmit={createBlog}>
             <div className="w-100 flex flex-col flex-left mb-2">
                 <label htmlFor="title">Title</label>
-                <input 
-                type="text" 
-                id='title' 
-                placeholder='Enter small title' 
-                value={title}
-                onChange={ev => setTitle(ev.target.value)}
+                <input
+                    type="text"
+                    id='title'
+                    placeholder='Enter small title'
+                    value={title}
+                    onChange={ev => setTitle(ev.target.value)}
                 />
             </div>
             <div className="w-100 flex flex-col flex-left mb-2">
                 <label htmlFor="slug">Slug (seo friendly url)</label>
-                <input 
-                type="text" 
-                id='slug' 
-                placeholder='Enter Slug url' 
-                value={slug}
-                onChange={handleSlugChange}
+                <input
+                    type="text"
+                    id='slug'
+                    placeholder='Enter Slug url'
+                    value={slug}
+                    onChange={handleSlugChange}
                 />
             </div>
 
@@ -110,18 +144,35 @@ export default function Blog(
             <div className="w-100 flex flex-col flex-left mb-2">
                 <div className="w-100">
                     <label htmlFor="images">Image (first image will be show as thumbnail, you can drag)</label>
-                    <input type="file" id='fileInput' className='mt-1' accept='image/*' multiple />
+                    <input type="file" id='fileInput' className='mt-1' accept='image/*' multiple onChange={uploadImages} />
                 </div>
                 <div className="w-100 flex flex-left mt-1">
-                    <Spinner />
+                    {isUploading && (<Spinner />)}
                 </div>
             </div>
+
+            {!isUploading && (
+                <div className="flex">
+                    <ReactSortable list={Array.isArray(images) ? images : []} setList={updateImagesOrder} animation={200}
+                        className='flex gap-1'
+                    >
+                        {images?.map((link, index) => (
+                            <div key={link} className="uploadedimg">
+                                <img src={link} alt="image" className='object-cover' />
+                                <div className="deleteimg">
+                                    <button onClick={() => handleDeleteImage(index)}><MdDeleteForever /></button>
+                                </div>
+                            </div>
+                        ))}
+                    </ReactSortable>
+                </div>
+            )}
             <div className="description w-100 flex flex-col flex-left mb-2">
                 <label htmlFor="description">Blog Content (for image: first upload and copy link and paste in ![alt text](link))</label>
                 <MarkdownEditor
 
-                value={description}
-                onChange={(ev) => setdescription(ev.text)}
+                    value={description}
+                    onChange={(ev) => setdescription(ev.text)}
 
                     style={{ width: '100%', height: '400px' }}
                     renderHTML={(text) => (

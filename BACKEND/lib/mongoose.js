@@ -1,9 +1,9 @@
 import mongoose from "mongoose" ;
 
 
-export function mangooseonnect(){
+export function mongooseConnect(){
     if (mongoose.connection.readystate ===1){
-        return mangooseonnect.connection.saPromise();
+        return mongooseConnect.connection.asPromise();
 
     }else{
         const uri = process.env.MONGODB_URI
