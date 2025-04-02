@@ -1,13 +1,14 @@
 import Head from "next/head";
 import Link from "next/link";
-import  { BiDownload} from "react-icons/bi";
+import { BiDownload} from "react-icons/bi";
 import { FaGithub, FaTwitter } from "react-icons/fa6";
 import { GrLinkedinOption } from "react-icons/gr";
 import { LiaBasketballBallSolid } from "react-icons/lia";
 import { GoArrowUpRight } from "react-icons/go";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+
   // active service background color
   const [activeIndex,setActiveIndex] = useState(0);
   const handleHower= (index)=>{
@@ -38,6 +39,32 @@ export default function Home() {
       description: "Passionate photographer and videographer capturing moments with creativity. Transforming visions into visual stories. Expert in visual storytelling, skilled in both photography and videography to deliver captivating content."
     }
   ];
+  const [loading, setLoading] = useState(true);
+  const [alldate , setAlldata]= useState([]);
+  const [allWork ,setAllwork] = useState([]);
+
+  useEffect(( ) =>{
+
+    const fetchdata = async ( )=> {
+      try{
+        const [projectResponse,blogResponse] = await Promise.all([
+          fetch ('/api/[rojects')
+        ])
+
+        const projecdata = await projectResponse.json();
+       
+        setAlldata(projectData);
+      } catch (error){
+        console.error('Error fetching Data ',error)
+
+      }finally{
+        setLoading(false);
+      }
+    }
+    fetchdata();
+
+  }, [])
+
 
 
   
@@ -45,7 +72,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>vbmcoder - Personal Portfolio</title>
+        <title>AdityaRaj - Personal Portfolio</title>
         <meta name="description" content="vbmcoder - Personal Portfolio" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="shortcut icon" type="image/png" href="/favicon.png" crossOrigin="anonymous" /> 
@@ -64,7 +91,7 @@ export default function Home() {
           <div className="flex w-100">
             <div className="heroinfoleft">
               <span className="hero_sb_title">I am Aditya</span>
-              <h1 className="hero_title">Web Devloper + <br/> <span className=" typed-text"> Ux Designer</span></h1>
+              <h1 className="hero_title">App Developer + <br/> <span className=" typed-text"> Web Developer</span></h1>
               <div className="hero_img_box heroimgbox">
                 <img src="/img/me.jpg"alt="coder"/>
                 
@@ -103,13 +130,13 @@ export default function Home() {
               
             </div>
             <div className="funfect_item">
-              <h3>12+</h3>
+              <h3>6+</h3>
               <h4> OpenSource <br/>
                 Library </h4>
               
             </div>
             <div className="funfect_item">
-              <h3>40+</h3>
+              <h3>4+</h3>
               <h4>Happy <br/>
               Customers</h4>
               
@@ -133,8 +160,8 @@ export default function Home() {
               {services.map((service, index) =>(
                 <div key ={index} 
                 className={`services_item ${activeIndex === index ? 'sactive' : ''}`}
-                onMouseOver={() => handleHower(index)}
-                onMouseOut={handleMouseOut}
+                // onMouseOver={() => handleHower(index)}
+                // onMouseOut={handleMouseOut}
 
 
                 >
@@ -162,7 +189,35 @@ export default function Home() {
       {/* Projects */}
       <section className="projects">
         <div className="container">
-          <div className="project_titles"></div>
+          <div className="project_titles">
+            <h2> My Recent Works </h2>
+            <p>We put your ideas and thus your wishes in the form of a unique web project that inspires you and you customers .</p>
+          </div>
+          <div className="project_buttons">
+            <button>All</button>
+            <button>Website</button>
+            <button>Apps</button>
+            <button>Content</button>
+          </div>
+          
+          <div className="projects_cards">
+            {loading ? <Spinner/> : (
+              setAlldata.slice(0,4).map((pro) =>(
+
+              ))
+
+            )}
+            <Link href='/' className="procard">
+            <div className="proimgbox">
+              <img src="/img/noimage.png" alt=""/>
+            </div>
+            <div className="procontentbox">
+              <h2> your project name</h2>
+              <GoArrowUpRight/>
+
+            </div>
+            </Link>
+          </div>
         </div>
           
         
