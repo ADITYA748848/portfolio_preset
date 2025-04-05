@@ -12,7 +12,14 @@ import { MdDeleteForever } from "react-icons/md";
 
 export default function Blog(
     {
-        _id
+        _id,
+        title : existingTitle,
+        slug : existingslug,
+        images : existingimages,
+        description : existingdescription,
+        blogcategory : existingblogcategory,
+        tags : existingtags,
+        status : existingstatus,
     }
 ) {
 
@@ -20,13 +27,13 @@ export default function Blog(
 
     const router = useRouter();
 
-    const [title, setTitle] = useState('');
-    const [slug, setslug] = useState('');
-    const [images, setimages] = useState([]);
-    const [description, setdescription] = useState('');
-    const [blogcategory, setblogcategory] = useState([]);
-    const [tags, settags] = useState('');
-    const [status, setstatus] = useState('');
+    const [title, setTitle] = useState(existingTitle || '');
+    const [slug, setslug] = useState(existingslug || '');
+    const [images, setimages] = useState(existingimages || []);
+    const [description, setdescription] = useState(existingdescription || '');
+    const [blogcategory, setblogcategory] = useState(existingblogcategory || []);
+    const [tags, settags] = useState(existingtags || '');
+    const [status, setstatus] = useState(existingstatus || '');
 
     const [isUploading, setIsUploading] = useState(false)
     const uploadImagesQueue = [];

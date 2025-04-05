@@ -1,7 +1,6 @@
 import { mongooseConnect } from "@/lib/mongoose";
 import { Project } from "@/models/Project";
 import projects from "../projects";
-import projects from "../projects";
 
 export default async function handle(req, res) {
     // if authernticated , connect to mongoose
