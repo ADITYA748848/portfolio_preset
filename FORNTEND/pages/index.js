@@ -52,7 +52,7 @@ export default function Home() {
           fetch ('/api/[rojects')
         ])
 
-        const projecdata = await projectResponse.json();
+        const projectData = await projectResponse.json();
        
         setAlldata(projectData);
       } catch (error){

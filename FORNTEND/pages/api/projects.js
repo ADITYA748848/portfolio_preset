@@ -7,6 +7,7 @@ export default async function handle(req, res) {
     // if authernticated , connect to mongoose
     await mongooseConnect();
     const {method} = req;
+    
     if (method === 'GET'){
         if (req.query?.id){
             // fetch a single project by id
