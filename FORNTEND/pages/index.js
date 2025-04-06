@@ -12,11 +12,11 @@ export default function Home() {
 
   // active service background color
   const [activeIndex,setActiveIndex] = useState(0);
-  const handleHower= (index)=>{
+  const handleHover= (index)=>{
 
   }
   const handleMouseOut =() =>{
-    setActiveIndex(0); // set the first item as
+    setActiveIndex(0); // set the first item as active when mouse leaves
   }
 
 
@@ -41,7 +41,7 @@ export default function Home() {
     }
   ];
   const [loading, setLoading] = useState(true);
-  const [alldate , setAlldata]= useState([]);
+  const [alldata , setAlldata]= useState([]);
   const [allWork ,setAllwork] = useState([]);
 
   useEffect(( ) =>{
@@ -49,12 +49,12 @@ export default function Home() {
     const fetchdata = async ( )=> {
       try{
         const [projectResponse,blogResponse] = await Promise.all([
-          fetch ('/api/[rojects')
+          fetch ('/api/projects')
         ])
 
         const projectData = await projectResponse.json();
        
-        setAlldata(projectData);
+        setAlldata(projecdata);
       } catch (error){
         console.error('Error fetching Data ',error)
 
@@ -66,6 +66,9 @@ export default function Home() {
 
   }, [])
 
+  useEffect(() => {
+  })
+
 
 
   
@@ -74,7 +77,7 @@ export default function Home() {
     <>
       <Head>
         <title>AdityaRaj - Personal Portfolio</title>
-        <meta name="description" content="vbmcoder - Personal Portfolio" />
+        <meta name="description" content="adityaraj - Personal Portfolio" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="shortcut icon" type="image/png" href="/favicon.png" crossOrigin="anonymous" /> 
         {/* <link rel="shortcut icon" type="image/png" href="/favicon.png" /> */}
@@ -159,8 +162,7 @@ export default function Home() {
             </div>
             <div className="services_menu">
               {services.map((service, index) =>(
-                <div key ={index} 
-                className={`services_item ${activeIndex === index ? 'sactive' : ''}`}
+                <div key ={index} className={`services_item ${activeIndex === index ? 'sactive' : ''}`}
                 // onMouseOver={() => handleHower(index)}
                 // onMouseOut={handleMouseOut}
 
@@ -203,21 +205,21 @@ export default function Home() {
           
           <div className="projects_cards">
             {loading ? <Spinner/> : (
-              setAlldata.slice(0,4).map((pro) =>(
-                <Link></Link>
-              ))
-
-            )}
-            <Link href='/' className="procard">
+              alldata.slice(0,4).map((pro) =>(
+                <Link href='/' key={pro._id} className="procard">
             <div className="proimgbox">
-              <img src="/img/noimage.png" alt=""/>
+              <img src={pro.images[0]} alt={pro.title}/>
             </div>
             <div className="procontentbox">
-              <h2> your project name</h2>
+              <h2>{pro.title}</h2>
               <GoArrowUpRight/>
 
             </div>
             </Link>
+              ))
+
+            )}
+            
           </div>
         </div>
           
