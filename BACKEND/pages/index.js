@@ -3,6 +3,8 @@ import { Bar } from 'react-chartjs-2';
 import { IoHome } from "react-icons/io5";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, plugins } from 'chart.js';
 import { useEffect, useState } from "react";
+// import LoginLayout from "@/components/LoginLayout";
+import Loading from "@/components/Loading";
 
 
 
@@ -32,18 +34,18 @@ export default function Home() {
     const fetchData = async () => {
       try {
         const response = await fetch('/api/blogs');
-        // const responseproject = await fetch('/api/projects');
-        // const responseShop = await fetch('/api/shops');
-        // const responseGallery = await fetch('/api/photos');
+        const responseproject = await fetch('/api/projects');
+        const responseShop = await fetch('/api/shops');
+        const responseGallery = await fetch('/api/photos');
         const data = await response.json()
-        // const dataProject = await responseproject.json()
-        // const dataShop = await responseShop.json()
-        // const dataGallery = await responseGallery.json()
+        const dataProject = await responseproject.json()
+        const dataShop = await responseShop.json()
+        const dataGallery = await responseGallery.json()
 
         setBlogsData(data);
-        // setProjectData(dataProject);
-        // setShopData(dataShop);
-        // setPhotosData(dataGallery);
+        setProjectData(dataProject);
+        setShopData(dataShop);
+        setPhotosData(dataGallery);
         setLoading(false);
       } catch (error) {
         setLoading(false);
@@ -77,7 +79,7 @@ export default function Home() {
   }
 
   return (
-
+    // <LoginLayout>
     <>
       <Head>
         <title>Portfolio Backend</title>
@@ -85,6 +87,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
+      {/* {loading ? <div className="po-fixed-center"><Loading/></div> :  */}
       <div className="dashboard">
 
         <div className="titledashboard flex flex-sb">
@@ -103,15 +106,15 @@ export default function Home() {
           </div>
           <div className="four_card">
             <h2>Total Projects</h2>
-            <span>5</span>
+            <span>{projectData.filter(dat => dat.status === 'publish').length}</span>
           </div>
           <div className="four_card">
             <h2>Total Products</h2>
-            <span>5</span>
+            <span>{shopData.filter(dat => dat.status === 'publish').length}</span>
           </div>
           <div className="four_card">
             <h2>Gallery Photos</h2>
-            <span>5</span>
+            <span>{photosData.length}</span>
           </div>
         </div>
 
@@ -174,24 +177,13 @@ export default function Home() {
                 </tr>
                 </tbody>
               </table>
-              {publishedblogs.length === 0 ? ("") : (
-                    <div className="blogpagination">
-                        <button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1}>Previous</button>
-                        {pageNumbers.slice(Math.max(currentPage - 3, 0), Math.min(currentPage + 2, pageNumbers.length)).map(number => (
-                            <button key={number}
-                                onClick={() => paginate(number)}
-                                className={`${currentPage === number ? 'active' : ''}`}>
-                                {number}
-                            </button>
-                        ))}
-                        <button onClick={() => paginate(currentPage +1)} disabled={currnetBlogs.length < perPage}>Next</button>
-                    </div>
-                )}
             </div>
           </div>
         </div>
       </div>
+      {/* } */}
     </>
+    // </LoginLayout>
 
   );
 

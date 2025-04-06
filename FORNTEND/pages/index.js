@@ -7,13 +7,14 @@ import { LiaBasketballBallSolid } from "react-icons/lia";
 import { GoArrowUpRight } from "react-icons/go";
 import { useEffect, useState } from "react";
 import Spinner from "@/components/Spinner";
+import Category from "./blogs/category/[category]";
 
 export default function Home() {
 
   // active service background color
   const [activeIndex,setActiveIndex] = useState(0);
-  const handleHower= (index)=>{
-
+  const handleHover= (index)=>{
+    setActiveIndex(index)
   }
   const handleMouseOut =() =>{
     setActiveIndex(0); // set the first item as
@@ -42,7 +43,9 @@ export default function Home() {
   ];
   const [loading, setLoading] = useState(true);
   const [alldata , setAlldata]= useState([]);
-  const [allWork ,setAllwork] = useState([]);
+  const [allwork ,setAllwork] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [filteredProjects, setFilteredProjects] = useState([]);
 
   useEffect(( ) =>{
 
@@ -52,9 +55,9 @@ export default function Home() {
           fetch ('/api/projects')
         ])
 
-        const projecdata = await projectResponse.json();
-       
-        setAlldata(projecdata);
+        const projecData = await projectResponse.json();
+        setAlldata(projecData);
+
       } catch (error){
         console.error('Error fetching Data ',error)
 
@@ -67,7 +70,16 @@ export default function Home() {
   }, [])
 
   useEffect(() => {
-  })
+    if (selectedCategory === 'All') {
+      setFilteredProjects(alldata.filter(pro => pro.status === 'publish'));
+    }else{
+      setFilteredProjects(alldata.filter(pro => pro.status === 'publish' && pro.projectcategory[0] === selectedCategory))
+    }
+  }, [selectedCategory, alldata])
+
+  const handleCategoryChange = (category) => {
+    selectedCategory(category);
+  }
 
 
 
@@ -164,8 +176,8 @@ export default function Home() {
               {services.map((service, index) =>(
                 <div key ={index} 
                 className={`services_item ${activeIndex === index ? 'sactive' : ''}`}
-                // onMouseOver={() => handleHower(index)}
-                // onMouseOut={handleMouseOut}
+                onMouseOver={() => handleHover(index)}
+                onMouseOut={handleMouseOut}
 
 
                 >
@@ -198,15 +210,20 @@ export default function Home() {
             <p>We put your ideas and thus your wishes in the form of a unique web project that inspires you and you customers .</p>
           </div>
           <div className="project_buttons">
-            <button>All</button>
-            <button>Website</button>
-            <button>Apps</button>
-            <button>Content</button>
+            <button className={selectedCategory === 'All' ? 'active' : ''} onClick={() => setSelectedCategory('All')}>All</button>
+            <button className={selectedCategory === 'Website Development' ? 'active' : ''} onClick={() => setSelectedCategory('Website Development')}>Website</button>
+            <button className={selectedCategory === 'App Development' ? 'active' : ''} onClick={() => setSelectedCategory('App Development')}>Apps</button>
+            <button className={selectedCategory === 'Design System' ? 'active' : ''} onClick={() => setSelectedCategory('Design System')}>Design</button>
+            <button className={selectedCategory === 'Video Editing' ? 'active' : ''} onClick={() => setSelectedCategory('Video Editing')}>Editing</button>
           </div>
           
           <div className="projects_cards">
-            {loading ? <Spinner/> : (
-              alldata.slice(0,4).map((pro) =>(
+            {loading ? <div className="flex flex-center wh_100"><Spinner/></div> : (
+              filteredProjects.length === 0 ? (
+
+                <h1  className="w-100 flex flex-center mt-3">No Project Found</h1>
+            ) : (
+              filteredProjects.slice(0,4).map((pro) =>(
                 <Link href='/' key={pro._id} className="procard">
             <div className="proimgbox">
               <img src={pro.images[0]} alt={pro.title}/>
@@ -214,11 +231,10 @@ export default function Home() {
             <div className="procontentbox">
               <h2>{pro.title}</h2>
               <GoArrowUpRight/>
-
             </div>
             </Link>
               ))
-
+            )
             )}
             
           </div>

@@ -27,9 +27,9 @@ export default function Projects() {
     const indexOfFirstBlog = (currentPage - 1) * perPage;
     const indexOfLastblog = currentPage * perPage;
 
-    const currnetBlogs = filteredBlogs.slice(indexOfFirstBlog, indexOfLastblog);
+    const currentBlogs = filteredBlogs.slice(indexOfFirstBlog, indexOfLastblog);
 
-    const publishedblogs = currnetBlogs.filter(ab => ab.status === 'publish');
+    const publishedblogs = currentBlogs.filter(ab => ab.status === 'publish');
 
     const pageNumbers = [];
 
@@ -101,7 +101,7 @@ export default function Projects() {
                                 {number}
                             </button>
                         ))}
-                        <button onClick={() => paginate(currentPage +1)} disabled={currnetBlogs.length < perPage}>Next</button>
+                        <button onClick={() => paginate(currentPage +1)} disabled={currentBlogs.length < perPage}>Next</button>
                     </div>
                 )}
             </div>

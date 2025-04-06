@@ -1,14 +1,13 @@
+import mongoose from "mongoose" ;
 
-import { MongoClient } from "mongodb";
 
-export default async function connectToDatabase(){
-    const client = new MongoClient(process.env.MONGODB_URI);
+export function mongooseConnect(){
+    if (mongoose.connection.readystate ===1){
+        return mongooseConnect.connection.asPromise();
 
-    try {
-        await client.connect();
-        return client.db();
-    } catch (error) {
-        console.error('Error connecting to MongoDb:' , error)
-        throw error
+    }else{
+        const uri = process.env.MONGODB_URI
+        return mongoose.connect(uri);
     }
+
 }
