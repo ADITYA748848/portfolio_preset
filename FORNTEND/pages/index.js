@@ -1,22 +1,25 @@
 import Head from "next/head";
 import Link from "next/link";
-import { BiDownload} from "react-icons/bi";
-import { FaGithub, FaTwitter } from "react-icons/fa6";
+import { BiDownload } from "react-icons/bi";
+import { FaCalendarDays, FaGithub, FaTwitter } from "react-icons/fa6";
 import { GrLinkedinOption } from "react-icons/gr";
 import { LiaBasketballBallSolid } from "react-icons/lia";
 import { GoArrowUpRight } from "react-icons/go";
 import { useEffect, useState } from "react";
 import Spinner from "@/components/Spinner";
+import Category from "./blogs/category/[category]";
+import { LuMedal } from "react-icons/lu";
+import { PiGraduationCap } from "react-icons/pi";
 
 export default function Home() {
 
   // active service background color
-  const [activeIndex,setActiveIndex] = useState(0);
-  const handleHover= (index)=>{
-
+  const [activeIndex, setActiveIndex] = useState(0);
+  const handleHover = (index) => {
+    setActiveIndex(index)
   }
-  const handleMouseOut =() =>{
-    setActiveIndex(0); // set the first item as active when mouse leaves
+  const handleMouseOut = () => {
+    setActiveIndex(0); // set the first item as
   }
 
 
@@ -41,24 +44,29 @@ export default function Home() {
     }
   ];
   const [loading, setLoading] = useState(true);
-  const [alldata , setAlldata]= useState([]);
-  const [allWork ,setAllwork] = useState([]);
+  const [alldata, setAlldata] = useState([]);
+  const [allwork, setAllwork] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [filteredProjects, setFilteredProjects] = useState([]);
 
-  useEffect(( ) =>{
+  useEffect(() => {
 
-    const fetchdata = async ( )=> {
-      try{
-        const [projectResponse,blogResponse] = await Promise.all([
-          fetch ('/api/projects')
+    const fetchdata = async () => {
+      try {
+        const [projectResponse, blogResponse] = await Promise.all([
+          fetch('/api/projects'),
+          fetch('/api/blogs')
         ])
 
-        const projectData = await projectResponse.json();
-       
-        setAlldata(projecdata);
-      } catch (error){
-        console.error('Error fetching Data ',error)
+        const projecData = await projectResponse.json();
+        const blogsData = await blogResponse.json();
+        setAlldata(projecData);
+        setAllwork(blogsData);
 
-      }finally{
+      } catch (error) {
+        console.error('Error fetching Data ', error)
+
+      } finally {
         setLoading(false);
       }
     }
@@ -67,11 +75,35 @@ export default function Home() {
   }, [])
 
   useEffect(() => {
-  })
+    if (selectedCategory === 'All') {
+      setFilteredProjects(alldata.filter(pro => pro.status === 'publish'));
+    } else {
+      setFilteredProjects(alldata.filter(pro => pro.status === 'publish' && pro.projectcategory[0] === selectedCategory))
+    }
+  }, [selectedCategory, alldata])
+
+  const handleCategoryChange = (category) => {
+    selectedCategory(category);
+  }
+
+  const formateDate = (date) => {
+    if (!date || isNaN(date)) {
+      return '';
+    }
+
+    const options = {
+      day : 'numeric',
+      month: 'long',
+      year: 'numeric',
+      hour12: true
+    };
+
+    return new Intl.DateTimeFormat('en-US', options).format(date)
+  }
 
 
 
-  
+
 
   return (
     <>
@@ -79,7 +111,7 @@ export default function Home() {
         <title>AdityaRaj - Personal Portfolio</title>
         <meta name="description" content="adityaraj - Personal Portfolio" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="shortcut icon" type="image/png" href="/favicon.png" crossOrigin="anonymous" /> 
+        <link rel="shortcut icon" type="image/png" href="/favicon.png" crossOrigin="anonymous" />
         {/* <link rel="shortcut icon" type="image/png" href="/favicon.png" /> */}
       </Head>
 
@@ -87,7 +119,7 @@ export default function Home() {
       <section className="hero">
         <div className="intro_text">
           <svg viewBox="0 0 1320 300">
-            <text x= '50%' y = '50%' textAnchor = 'middle' className="animate-stroke">HI</text>
+            <text x='50%' y='50%' textAnchor='middle' className="animate-stroke">HI</text>
           </svg>
 
         </div>
@@ -95,19 +127,19 @@ export default function Home() {
           <div className="flex w-100">
             <div className="heroinfoleft">
               <span className="hero_sb_title">I am Aditya</span>
-              <h1 className="hero_title">App Developer + <br/> <span className=" typed-text"> Web Developer</span></h1>
+              <h1 className="hero_title">App Developer + <br /> <span className=" typed-text"> Web Developer</span></h1>
               <div className="hero_img_box heroimgbox">
-                <img src="/img/me.jpg"alt="coder"/>
-                
-              </div> 
+                <img src="/img/me.jpg" alt="coder" />
+
+              </div>
               <div className=" lead"> I break down complex user experience problems to create integritiy focussed solution that connect billions of people .</div>
               <div className=" hero_btn_box">
-                <Link href='/' download={'/img/resume.pdf'} className='download_cv'>Download CV <BiDownload/></Link>
+                <Link href='/' download={'/img/resume.pdf'} className='download_cv'>Download CV <BiDownload /></Link>
                 <ul className="hero_social">
-                  <li> < a href="/"><FaTwitter/></a></li>
-                  <li> < a href="/"><LiaBasketballBallSolid/></a></li>
-                  <li> < a href="/"><GrLinkedinOption/></a></li>
-                  <li> < a href="/"><FaGithub/></a></li>
+                  <li> < a href="/"><FaTwitter /></a></li>
+                  <li> < a href="/"><LiaBasketballBallSolid /></a></li>
+                  <li> < a href="/"><GrLinkedinOption /></a></li>
+                  <li> < a href="/"><FaGithub /></a></li>
 
                 </ul>
               </div>
@@ -115,7 +147,7 @@ export default function Home() {
             {/* rightside image section */}
             <div className="heroimageright">
               <div className="hero_img_box">
-                <img src="/img/me.png" alt=""/>
+                <img src="/img/me.png" alt="" />
               </div>
 
             </div>
@@ -123,33 +155,33 @@ export default function Home() {
           <div className="funfect_area flex flex-sb">
             <div className="funfect_item">
               <h3>3+</h3>
-              <h4>year of<br/>
-                 Experience </h4>
-              
+              <h4>year of<br />
+                Experience </h4>
+
             </div>
             <div className="funfect_item">
               <h3> 20+ </h3>
-              <h4> projects <br/>
-                 completed</h4>
-              
+              <h4> projects <br />
+                completed</h4>
+
             </div>
             <div className="funfect_item">
               <h3>6+</h3>
-              <h4> OpenSource <br/>
+              <h4> OpenSource <br />
                 Library </h4>
-              
+
             </div>
             <div className="funfect_item">
               <h3>4+</h3>
-              <h4>Happy <br/>
-              Customers</h4>
-              
+              <h4>Happy <br />
+                Customers</h4>
+
             </div>
-          
+
           </div>
-          
+
         </div>
-      
+
       </section>
 
       {/* Services */}
@@ -161,24 +193,25 @@ export default function Home() {
               <p> We put your ideas and thus your wishes in the form of a unique web project that inspires you and you customers . </p>
             </div>
             <div className="services_menu">
-              {services.map((service, index) =>(
-                <div key ={index} className={`services_item ${activeIndex === index ? 'sactive' : ''}`}
-                // onMouseOver={() => handleHower(index)}
-                // onMouseOut={handleMouseOut}
+              {services.map((service, index) => (
+                <div key={index}
+                  className={`services_item ${activeIndex === index ? 'sactive' : ''}`}
+                  onMouseOver={() => handleHover(index)}
+                  onMouseOut={handleMouseOut}
 
 
                 >
                   <div className="left_s_box">
                     <span>0 {index + 1}</span>
                     <h3>{service.title}</h3>
-                    
+
 
                   </div>
                   <div className="right_s_box">
                     <p>{service.description}</p>
 
                   </div>
-                  <GoArrowUpRight/>
+                  <GoArrowUpRight />
 
 
                 </div>
@@ -186,7 +219,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        
+
       </section>
 
       {/* Projects */}
@@ -197,49 +230,184 @@ export default function Home() {
             <p>We put your ideas and thus your wishes in the form of a unique web project that inspires you and you customers .</p>
           </div>
           <div className="project_buttons">
-            <button>All</button>
-            <button>Website</button>
-            <button>Apps</button>
-            <button>Content</button>
+            <button className={selectedCategory === 'All' ? 'active' : ''} onClick={() => setSelectedCategory('All')}>All</button>
+            <button className={selectedCategory === 'Website Development' ? 'active' : ''} onClick={() => setSelectedCategory('Website Development')}>Website</button>
+            <button className={selectedCategory === 'App Development' ? 'active' : ''} onClick={() => setSelectedCategory('App Development')}>Apps</button>
+            <button className={selectedCategory === 'Design System' ? 'active' : ''} onClick={() => setSelectedCategory('Design System')}>Design</button>
+            <button className={selectedCategory === 'Video Editing' ? 'active' : ''} onClick={() => setSelectedCategory('Video Editing')}>Editing</button>
           </div>
-          
+
           <div className="projects_cards">
-            {loading ? <Spinner/> : (
-              alldata.slice(0,4).map((pro) =>(
-                <Link href='/' key={pro._id} className="procard">
-            <div className="proimgbox">
-              <img src={pro.images[0]} alt={pro.title}/>
-            </div>
-            <div className="procontentbox">
-              <h2>{pro.title}</h2>
-              <GoArrowUpRight/>
+            {loading ? <div className="flex flex-center wh_100"><Spinner /></div> : (
+              filteredProjects.length === 0 ? (
 
-            </div>
-            </Link>
-              ))
-
+                <h1 className="w-100 flex flex-center mt-3">No Project Found</h1>
+              ) : (
+                filteredProjects.slice(0, 4).map((pro) => (
+                  <Link href='/' key={pro._id} className="procard">
+                    <div className="proimgbox">
+                      <img src={pro.images[0]} alt={pro.title} />
+                    </div>
+                    <div className="procontentbox">
+                      <h2>{pro.title}</h2>
+                      <GoArrowUpRight />
+                    </div>
+                  </Link>
+                ))
+              )
             )}
-            
+
           </div>
         </div>
-          
-        
-       
+
+
+
       </section>
 
       {/* Experience study */}
       <section className="exstudy">
-
+        <div className="container flex flex-left flex-sb">
+          <div className="experience">
+            <div className="experience_title flxe gap-1">
+              <LuMedal />
+              <h2>My Experience</h2>
+            </div>
+            <div className="exper_cards">
+              <div className="exper_card">
+                <span>2023-Present</span>
+                <h3>Freelance</h3>
+                <p>Full Stack App Developer</p>
+              </div>
+              <div className="exper_card">
+                <span>2023-Present</span>
+                <h3>Freelance</h3>
+                <p>Full Stack Web Developer</p>
+              </div>
+              <div className="exper_card">
+                <span>2024-Present</span>
+                <h3>YouTube Content Creation</h3>
+                <p>Full Stack App/Web Developer</p>
+              </div>
+              <div className="exper_card">
+                <span>2025-Present</span>
+                <h3>Developing Phase</h3>
+                <p>Unreal Engine 5 Game development</p>
+              </div>
+            </div>
+          </div>
+          <div className="experience">
+            <div className="experience_title flxe gap-1">
+              <PiGraduationCap />
+              <h2>My Education</h2>
+            </div>
+            <div className="exper_cards">
+              <div className="exper_card">
+                <span>2020-2022</span>
+                <h3>Higher Secondary Education</h3>
+                <p>Koshi College Khagaria</p>
+              </div>
+              <div className="exper_card">
+                <span>2022-2023</span>
+                <h3>IIT Preparation</h3>
+                <p>Allen Kota</p>
+              </div>
+              <div className="exper_card">
+                <span>2023-2027</span>
+                <h3>B.Tech</h3>
+                <p>Galgotias University</p>
+              </div>
+              <div className="exper_card">
+                <span>2025-Present</span>
+                <h3>Learning Phases(CSE)</h3>
+                <p>Self Study</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* My Skills */}
       <section className="myskills">
-      
+        <div className="container">
+          <div className="myskills_title">
+            <h2>My Skills</h2>
+            <p>We put your ideas and thus your wishes in the form of a unique web project that inspires you and you customers </p>
+          </div>
+          <div className="myskils_cards">
+            <div className="mys_card">
+              <div className="mys_inner">
+                <img src="/img/python.svg" alt="python" />
+                <h2>85%</h2>
+              </div>
+              <p className="text-center">Python</p>
+            </div>
+            <div className="mys_card">
+              <div className="mys_inner">
+                <img src="/img/firebase.svg" alt="firebase" />
+                <h2>80%</h2>
+              </div>
+              <p className="text-center">Firebase</p>
+            </div>
+            <div className="mys_card">
+              <div className="mys_inner">
+                <img src="/img/mongodb.svg" alt="mongodb" />
+                <h2>90%</h2>
+              </div>
+              <p className="text-center">MongoDB</p>
+            </div>
+            <div className="mys_card">
+              <div className="mys_inner">
+                <img src="/img/redux.svg" alt="redux" />
+                <h2>60%</h2>
+              </div>
+              <p className="text-center">Redux</p>
+            </div>
+            <div className="mys_card">
+              <div className="mys_inner">
+                <img src="/img/react.svg" alt="react" />
+                <h2>87%</h2>
+              </div>
+              <p className="text-center">React</p>
+            </div>
+            <div className="mys_card">
+              <div className="mys_inner">
+                <img src="/img/js.svg" alt="js" />
+                <h2>91%</h2>
+              </div>
+              <p className="text-center">JavaScript</p>
+            </div>
+          </div>
+        </div>
+
       </section>
 
       {/* Recent Blogs */}
       <section className="recentblogs">
-       
+        <div className="container">
+          <div className="myskills_title">
+            <h2>Recent Blogs</h2>
+            <p>We put your ideas and thus your wishes in the form of a unique web project that inspires you and you customers</p>
+          </div>
+          <div className="recent_blogs">
+            {allwork.slice(0, 3).map((blog) => {
+              return <Link href={`/blogs/${blog.slug}`} key={blog._id} className="re_blog">
+                <div className="re_blogimg">
+                  <img src={blog.images[0] || '/img/noimage.png'}
+                    alt={blog.title} />
+                  <span>{blog.blogcategory[0]}</span>
+                </div>
+                <div className="re_bloginfo">
+                  <div className="re_topdate flex gap-1">
+                    <div className="res_date">
+                      <FaCalendarDays/> <span>{formateDate(new Date(blog.createdAt))}</span>
+                    </div>
+                  </div>
+                  <h2>{blog.title}</h2>
+                </div>  
+              </Link>
+            })}
+          </div>
+        </div>
       </section>
 
     </>

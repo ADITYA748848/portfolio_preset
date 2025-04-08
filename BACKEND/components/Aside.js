@@ -8,8 +8,9 @@ import { MdOutlineShoppingCartCheckout } from "react-icons/md";
 import { TfiGallery } from "react-icons/tfi";
 import { MdOutlineContacts } from "react-icons/md";
 import { IoSettingsOutline } from "react-icons/io5";
+// import { useSession, signOut } from "next-auth/react";
 
-export default function Aside({ asideOpen, handleAsideOpen }) {
+export default function Aside({ asideOpen }) {
         const router = useRouter();
         const [clicked, setClicked] = useState(false);
         const [activeLink, setActiveLink] = useState('/');
@@ -27,9 +28,10 @@ export default function Aside({ asideOpen, handleAsideOpen }) {
                 setActiveLink(router.pathname)
         }, [router.pathname])
 
+        // const { data: session } = useSession()
 
-        return <>
-
+        // if (session) {
+          return <>
                 <aside className={asideOpen ? 'asideleft active' : 'asideleft'}>
                         <ul>
 
@@ -121,5 +123,7 @@ export default function Aside({ asideOpen, handleAsideOpen }) {
                         </ul>
                         <button className="logoutbtn">Logout</button>
                 </aside>
-        </>
+        </>      
+        // }
+        
 }

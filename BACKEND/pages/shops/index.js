@@ -83,8 +83,8 @@ export default function shops() {
                                         <td><h3>{blog.title}</h3></td>
                                         <td>
                                             <div className="flex gap-2 flex-center">
-                                                <Link href={'/projects/edit/' + blog._id}><button><FaEdit /></button></Link>
-                                                <Link href={'/projects/delete/' + blog._id}><button><RiDeleteBin6Fill /></button></Link>
+                                                <Link href={'/shops/edit/' + blog._id}><button><FaEdit /></button></Link>
+                                                <Link href={'/shops/delete/' + blog._id}><button><RiDeleteBin6Fill /></button></Link>
                                             </div>
                                         </td>
                                     </tr>
