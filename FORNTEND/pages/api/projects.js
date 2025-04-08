@@ -21,7 +21,7 @@ export default async function handle(req, res) {
         }else if (req.query?.slug){
             // fetch peroject by slug
             const projectslug = await Project.find({ slug:req.query.slug});
-            res.josn(projectslug.reverse()) ;
+            res.json(projectslug.reverse()) ;
             
         }else {
             // fetch all projects
