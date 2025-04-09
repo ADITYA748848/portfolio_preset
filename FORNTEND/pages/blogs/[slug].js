@@ -120,8 +120,39 @@ const BlogPage = () => {
     }
     const replyFormRef = useRef(null);
 
-    const updateChildrenComments = () => {
+    const handleReply = (parentCommentId, parentName) => {
+        setNewComment({
+            ...newComment,
+            parent: parentCommentId,
+            parentName: parentName,
+            maincomment: false
+        })
+        if (replyFormRef.current) {
+            replyFormRef.current.scrollInfoView({ behavior: 'smooth' })
+        }
+    }
 
+    const handleRemoveReply = () => {
+        setNewComment({
+            ...newComment,
+            parent: null,
+            parentName: null,
+            maincomment: true
+        })
+    }
+
+    const updateChildrenComments = () => {
+        return comments.map(comment => {
+            if (comment._id === parentId) {
+                
+            } else if (comment.children && comment.children.length > 0){
+                return {
+                    ...comment,
+                    children: updateChildrenComments (comment.children, parentId, newComment)
+                }
+            }
+            return comment;
+        })
     }
     if (loading) {
         return (
@@ -209,8 +240,27 @@ const BlogPage = () => {
                 </code>
             )
         }
+    }
 
+    const renderComments = (comments) => {
+        if (!comments) {
+            return null;
+        }
 
+        const commentsMap = new Map();
+        comments.forEach(comment => {
+            if (comment.maincomment) {
+                commentsMap.set( comment._id, [])
+            } 
+        })
+
+        comments.forEach(comment => {
+            if (!comment.maincomment && comment.parent) {
+                if (commentsMap.has(comment.parent)) {
+                    commentsMap.get(comment.parent).push(comment);
+                }  
+            } 
+        });
     }
 
     return (
