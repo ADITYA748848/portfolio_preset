@@ -42,6 +42,9 @@ const BlogPage = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [messageok, setMessageOk] = useState("");
+    const [copied, setCopied] = useState(false);
+
+
 
     useEffect(() => {
         const fetchBlogData = async () => {
@@ -88,7 +91,18 @@ const BlogPage = () => {
         };
 
         return new Intl.DateTimeFormat("en-US", options).format(date);
-    };
+    }
+    const blogurl = `http://localhost:3000/blogs/${slug}`;
+
+
+    const handleCopyUrl = (url) => {
+        navigator.clipboard.writeText(url);
+        setCopied(true);
+        setTimeout(() => {
+            setCopied(false);
+
+        }, 3000); // reset copied state after 3 seconds
+    }
 
     return (
         <>
@@ -122,8 +136,37 @@ const BlogPage = () => {
                                             </div>
                                             <div className="adminslug">
                                                 <CiRead />
-                                                <span>Comments ({blogData.comments? blogData.comments.length:0})</span>
+                                                <span>Comments ({blogData.comments ? blogData.comments.length : 0})</span>
                                             </div>
+                                        </div>
+
+                                        <div className="shareblogslug">
+                                            {/* copy url button */}
+                                            <div title="Copy URL" onClick={() => handleCopyUrl(blogUrl)} style={{ cursor: 'pointer' }}>
+                                                <BsCopy /> <span>{copied ? 'Copied!' : ''}</span>
+                                            </div>
+
+                                            {/* facebook share buttton */}
+                                            <a href="">
+                                                <RiFacebookFill />
+
+                                            </a>
+                                            {/* twitter share button */}
+                                            <a href="">
+                                                <FaTwitter />
+
+                                            </a>
+                                            {/* whatsapp share button */}
+                                            <a href="">
+                                                <RiWhatsappFill />
+
+                                            </a>
+                                            {/* linkedin share button */}
+                                            <a href="">
+                                                <BiLogoLinkedin />
+
+                                            </a>
+
                                         </div>
                                     </div>
                                 </div>
