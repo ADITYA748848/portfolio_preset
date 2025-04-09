@@ -1,4 +1,4 @@
-// pages/blogs/[slug].js
+d// pages/blogs/[slug].js
 
 import { SlCalender } from "react-icons/sl";
 import { CiRead } from "react-icons/ci";
@@ -19,6 +19,7 @@ import { useRouter } from "next/router";
 import useFetchData from "@/hooks/useFetchData";
 import { useEffect, useState } from "react";
 import Spinner from "@/components/Spinner";
+
 
 const BlogPage = () => {
     const router = useRouter();
@@ -103,6 +104,55 @@ const BlogPage = () => {
 
         }, 3000); // reset copied state after 3 seconds
     }
+    const Code = ({ node, inline, className, children, ...props }) => {
+        const match = /language-(\w+)/.exec(className || '');
+        const [copied, setCopied] = useState(false);
+        const handleCopy = () => {
+            navigator.clipboard.writeText(children);
+            setCopied(true);
+            setTimeout(() => {
+                setCopied(false);
+
+            }, 3000);
+
+        }
+        if (inline) {
+            return <code>{children}</code>
+
+        } else if (match) {
+            return (
+                <div style={{ position: 'relative' }}>
+                    <SyntaxHighlighter
+                        style={a11yDark}  // Use the correct style name
+                        language={match[1]}
+                        PreTag='pre'
+                        {...props}
+                        codeTagProps={{ style: { padding: '0', borderRadius: '5px', overflow: 'auto', whiteSpace: 'pre-wrap' } }}
+
+
+                    >
+                        {String(children).replace(/\n$/, '')}
+
+
+                    </SyntaxHighlighter>
+                    <button onclick={handleCopy} style={{ position: 'absolute', top: '0', right: '0', zIndex: '1', background: '#3d3d3d', color: '#fff', padding: '10px' }}>
+                        {copied ? 'Copied!' : 'Copy code'}
+
+                    </button>
+
+                </div >
+
+            );
+        } else {
+            return (
+                <code className="md-post-code"{...props}>
+                    {children}
+                </code>
+            )
+        }
+
+
+    }
 
     return (
         <>
@@ -142,32 +192,60 @@ const BlogPage = () => {
 
                                         <div className="shareblogslug">
                                             {/* copy url button */}
-                                            <div title="Copy URL" onClick={() => handleCopyUrl(blogUrl)} style={{ cursor: 'pointer' }}>
+                                            <div title="Copy URL" onClick={() => handleCopyUrl(blogurl)} style={{ cursor: 'pointer' }}>
                                                 <BsCopy /> <span>{copied ? 'Copied!' : ''}</span>
                                             </div>
 
                                             {/* facebook share buttton */}
-                                            <a href="">
+                                            <a target="_blank" href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(blogurl)}`} rel="noopener noreferrer">
                                                 <RiFacebookFill />
 
                                             </a>
                                             {/* twitter share button */}
-                                            <a href="">
+                                            <a target="_blank" href={`https://twitter.com/intent/tweet?text=${encodeURIComponent('Check out this blog post:' + blogurl)}`} rel="noopener noreferrer">
                                                 <FaTwitter />
 
                                             </a>
                                             {/* whatsapp share button */}
-                                            <a href="">
+                                            <a target="_blank" href={`https://wa.me/?text=Check out this blog post: ${encodeURIComponent(blogurl)}`} rel="noopener noreferrer">
                                                 <RiWhatsappFill />
 
                                             </a>
                                             {/* linkedin share button */}
-                                            <a href="">
+                                            <a target="_blank" href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(blogurl)}`} rel="noopener noreferrer">
                                                 <BiLogoLinkedin />
 
                                             </a>
 
                                         </div>
+                                    </div>
+                                    <h1>{blogData.blog.title}</h1>
+                                    {loading ? <Spinner /> : <div className="blogcontent">
+                                        <ReactMarkdown
+                                            remarkPlugins={[remarkGfm]}
+                                            components={{
+                                                code: Code,
+
+                                            }}
+                                        >
+                                            {blogData.blog.description}
+
+
+                                        </ReactMarkdown>
+
+                                    </div>}
+                                    <div className="blogslugtags">
+                                        <div className="blogstegs">
+                                            <h2>Tags:</h2>
+                                            <div className="flex flex-wrap gap-1">
+                                            {blogData && blogData.blog.tags.map((cat) => {
+                                                return <span key={cat}>{cat}</span>
+                                            })}
+
+                                            </div>
+
+                                        </div>
+                                   
                                     </div>
                                 </div>
                             </div>
