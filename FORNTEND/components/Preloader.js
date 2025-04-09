@@ -15,7 +15,7 @@ const Preloader = ({ isLoading }) => {
             const flat = "M0 2S175 1 500 1s500 1 500 1V0H0Z";
 
             tl.to(".preloader-heading .load-text , .preloader-heading , .preloader-heading::before ,.cont", {
-                delay: 1.5,
+                delay: 1.0,
                 y: -100,
                 opacity: 0,
             });
@@ -53,14 +53,12 @@ const Preloader = ({ isLoading }) => {
 
             <div className="preloader-heading">
                 <div className="load-text">
-                    <span>V</span>
-                    <span>B</span>
-                    <span>M</span>
+                    <span>S</span>
+                    <span>A</span>
                     <span>C</span>
-                    <span>O</span>
-                    <span>D</span>
-                    <span>E</span>
-                    <span>R</span>
+                    <span>H</span>
+                    <span>I</span>
+                    <span>N</span>
                 </div>
             </div>
         </div>

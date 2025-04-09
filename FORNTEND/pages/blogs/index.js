@@ -11,6 +11,7 @@ import { useState } from "react";
 import useFetchData from "@/hooks/useFetchData";
 import Spinner from "@/components/Spinner";
 import Link from "next/link";
+import Blogsearch from "@/components/Blogsearch";
 
 export default function blogs() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -19,6 +20,15 @@ export default function blogs() {
   const [searchQuery, setSearchQuery] = useState("");
 
   const { alldata, loading } = useFetchData("/api/blogs");
+
+  const [searchInput, setSearchInput] = useState(false);
+
+  const handleSearchOpen = () => {
+    setSearchInput(!searchInput)
+  }
+  const handleSearchClose = () => {
+    setSearchInput(false)
+  }
 
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -30,8 +40,8 @@ export default function blogs() {
     searchQuery.trim() === ""
       ? alldata
       : alldata.filter((blog) =>
-          blog.title.toLowerCase().includes(searchQuery.toLocaleLowerCase())
-        );
+        blog.title.toLowerCase().includes(searchQuery.toLocaleLowerCase())
+      );
 
   const indexOfFirstBlog = (currentPage - 1) * perPage;
   const indexOfLastblog = currentPage * perPage;
@@ -68,7 +78,7 @@ export default function blogs() {
                 </p>
                 <div className="subemail">
                   <form className="flex">
-                    <input placeholder="search blogs here..." type="text" />
+                    <input onClick={handleSearchOpen} placeholder="search blogs here..." type="text" />
                     <button>Search</button>
                   </form>
                 </div>
@@ -108,7 +118,7 @@ export default function blogs() {
                                       {blog.blogcategory.map((cat) => {
                                         return (
                                           <Link
-                                            href={`/blog/category${cat}`}
+                                            href={`/blog/category/${cat}`}
                                             className="ai"
                                           >
                                             <span></span>
@@ -234,7 +244,7 @@ export default function blogs() {
                       return (
                         <div className="lpost" key={blog._id}>
                           <div className="lpostimg">
-                            <Link href={"/blogs/${blog.slug}"}>
+                            <Link href={`/blogs/${blog.slug}`}>
                               <img src={blog.images[0]} alt={blog.title} />
                             </Link>
                             <div className="tegs">
@@ -264,19 +274,21 @@ export default function blogs() {
               </div>
             </div>
             {publishedData.length === 0 ? ("") : (
-                    <div className='blogspaginationbtn flex flex -center mt-3 '>
-                        <button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1}>Previous</button>
-                        {pageNumbers.slice(Math.max(currentPage - 3, 0), Math.min(currentPage + 2, pageNumbers.length)).map(number => (
-                            <button key={number}
-                                onClick={() => paginate(number)}
-                                className={`${currentPage === number ? 'active' : ''}`}>
-                                {number}
-                            </button>
-                        ))}
-                        <button onClick={() => paginate(currentPage +1)} disabled={currnetBlogs.length < perPage}>Next</button>
-                    </div>
-                )}
+              <div className='blogspaginationbtn flex flex -center mt-3 '>
+                <button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1}>Previous</button>
+                {pageNumbers.slice(Math.max(currentPage - 3, 0), Math.min(currentPage + 2, pageNumbers.length)).map(number => (
+                  <button key={number}
+                    onClick={() => paginate(number)}
+                    className={`${currentPage === number ? 'active' : ''}`}>
+                    {number}
+                  </button>
+                ))}
+                <button onClick={() => paginate(currentPage +1)} disabled={indexOfLastblog >= filteredBlogs.length}>
+                Next</button>
+              </div>
+            )}
           </div>
+          {searchInput ? <Blogsearch cls={handleSearchClose} /> : null}
         </section>
       </div>
     </>

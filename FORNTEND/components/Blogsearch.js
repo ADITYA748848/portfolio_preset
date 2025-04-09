@@ -21,7 +21,8 @@ export default function Blogsearch(props) {
     const [blogtitle, setBlogtitle] = useState('');  // blogtitle should be initialized as a string
 
     // filter for published blogs required
-    const publishedData = allwork.filter(ab => ab.status === 'publish');
+    const publishedData = allwork?.filter(ab => ab.status === 'publish') || [];
+
 
     // Function to handle search
     useEffect(() => {
