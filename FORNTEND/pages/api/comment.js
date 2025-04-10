@@ -7,9 +7,9 @@ export default async function handle(req, res) {
 
     const { method } = req;
 
-    if (method === "post") {
+    if (method === "POST") {
         try {
-            const { name, email, title, contentpera, parent } = req.body;
+            const { name, email, title, maincomment, contentpera, parent} = req.body;
 
             let commentDoc;
             if (parent) {
@@ -19,6 +19,7 @@ export default async function handle(req, res) {
                     email,
                     title,
                     contentpera,
+                    maincomment,
                     parent: parent,
                 });
                 // update parent comment's children array
@@ -32,6 +33,7 @@ export default async function handle(req, res) {
                     email,
                     title,
                     contentpera,
+                    maincomment
                 });
             }
             res.status(201).json(commentDoc); // respond with 201 created status

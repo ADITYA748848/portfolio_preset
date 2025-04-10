@@ -1,4 +1,3 @@
-
 import { SlCalender } from "react-icons/sl";
 import { CiRead } from "react-icons/ci";
 import { RiFacebookFill } from "react-icons/ri";
@@ -18,6 +17,8 @@ import { useRouter } from "next/router";
 import useFetchData from "@/hooks/useFetchData";
 import { useEffect, useRef, useState } from "react";
 import Spinner from "@/components/Spinner";
+import { FiSearch } from "react-icons/fi";
+import Blogsearch from "@/components/Blogsearch";
 
 
 const BlogPage = () => {
@@ -28,6 +29,15 @@ const BlogPage = () => {
     // hook for all data fetching
 
     const { alldata } = useFetchData("/api/blogs");
+
+    const [searchInput, setSearchInput] = useState(false);
+
+    const handleSearchOpen = () => {
+        setSearchInput(!searchInput)
+    }
+    const handleSearchClose = () => {
+        setSearchInput(false);
+    }
 
     const [blogData, setBlogData] = useState({ blog: {}, comments: [] });
     const [newComment, setNewComment] = useState({
@@ -43,8 +53,6 @@ const BlogPage = () => {
     const [error, setError] = useState(null);
     const [messageok, setMessageOk] = useState("");
     const [copied, setCopied] = useState(false);
-
-
 
     useEffect(() => {
         const fetchBlogData = async () => {
@@ -65,24 +73,31 @@ const BlogPage = () => {
 
     const handleCommentSubmit = async (e) => {
         e.preventDefault();
-        try {
-            const response = await axios.post(`/api/blogs/${slug}`, newComment);
 
-            if (newComment.parent) {
+        // Dynamically set maincomment based on presence of parent
+        const commentToSend = {
+            ...newComment,
+            maincomment: newComment.parent ? false : true
+        };
+
+        try {
+            const response = await axios.post(`/api/blogs/${slug}`, commentToSend);
+
+            if (commentToSend.parent) {
                 setBlogData(prevData => {
-                    const updatedComments = prevData.comments.map(Comment => {
-                        if (Comment._id === newComment.parent) {
+                    const updatedComments = prevData.comments.map(comment => {
+                        if (comment._id === commentToSend.parent) {
                             return {
-                                ...Comment,
-                                children: [...Comment.children, response.data]
+                                ...comment,
+                                children: [...comment.children, response.data]
                             }
-                        } else if (Comment.children && Comment.children.length > 0) {
+                        } else if (comment.children && comment.children.length > 0) {
                             return {
-                                ...Comment,
-                                children: updateChildrenComments(Comment.children, newComment.parent, response.data)
+                                ...comment,
+                                children: updateChildrenComments(comment.children, commentToSend.parent, response.data)
                             };
                         }
-                        return Comment;
+                        return comment;
                     });
 
                     return {
@@ -107,7 +122,7 @@ const BlogPage = () => {
                 email: '',
                 title: '',
                 contentpera: '',
-                maincomment: true,
+                maincomment: true,  // default true for new comment form
                 parent: null,
                 parentName: '',
             })
@@ -118,6 +133,7 @@ const BlogPage = () => {
             }, 5000);
         }
     }
+
     const replyFormRef = useRef(null);
 
     const handleReply = (parentCommentId, parentName) => {
@@ -126,9 +142,9 @@ const BlogPage = () => {
             parent: parentCommentId,
             parentName: parentName,
             maincomment: false
-        })
+        });
         if (replyFormRef.current) {
-            replyFormRef.current.scrollInfoView({ behavior: 'smooth' })
+            replyFormRef.current.scrollIntoView({ behavior: 'smooth' }); // Fixed typo: scrollInfoView -> scrollIntoView
         }
     }
 
@@ -141,19 +157,25 @@ const BlogPage = () => {
         })
     }
 
-    const updateChildrenComments = () => {
+    const updateChildrenComments = (comments, parentId, newComment) => {
+        if (!comments) return [];
+
         return comments.map(comment => {
             if (comment._id === parentId) {
-
+                return {
+                    ...comment,
+                    children: [...(comment.children || []), newComment]
+                };
             } else if (comment.children && comment.children.length > 0) {
                 return {
                     ...comment,
                     children: updateChildrenComments(comment.children, parentId, newComment)
-                }
+                };
             }
             return comment;
-        })
-    }
+        });
+    };
+
     if (loading) {
         return (
             <div className="flex flex-center wh_100">
@@ -164,14 +186,11 @@ const BlogPage = () => {
     if (error) {
         return <p>Error:{error}</p>;
     }
-    const createdAtDate =
-        blogData && blogData.blog.createdAt
-            ? new Date(blogData && blogData.blog.createdAt)
-            : null;
+    const createdAtDate = blogData && blogData.blog.createdAt ? new Date(blogData && blogData.blog.createdAt) : null;
 
     const formatDate = (date) => {
         if (!date || isNaN(date)) {
-            return "";
+            return '';
         }
 
         const options = {
@@ -181,8 +200,11 @@ const BlogPage = () => {
             hour12: true,
         };
 
-        return new Intl.DateTimeFormat("en-US", options).format(date);
-    }
+        return new Intl.DateTimeFormat('en-US', options).format(date);
+    };
+
+
+
     const blogurl = `http://localhost:3000/blogs/${slug}`;
 
 
@@ -225,7 +247,7 @@ const BlogPage = () => {
 
 
                     </SyntaxHighlighter>
-                    <button onclick={handleCopy} style={{ position: 'absolute', top: '0', right: '0', zIndex: '1', background: '#3d3d3d', color: '#fff', padding: '10px' }}>
+                    <button onClick={handleCopy} style={{ position: 'absolute', top: '0', right: '0', zIndex: '1', background: '#3d3d3d', color: '#fff', padding: '10px' }}>
                         {copied ? 'Copied!' : 'Copy code'}
 
                     </button>
@@ -252,7 +274,7 @@ const BlogPage = () => {
             if (comment.maincomment) {
                 commentsMap.set(comment._id, []);
             }
-        })
+        });
 
         comments.forEach(comment => {
             if (!comment.maincomment && comment.parent) {
@@ -262,35 +284,35 @@ const BlogPage = () => {
             }
         });
 
-
-        return comments.filter(comment => comment.maincommnet).map(parentComment => {
-            <div className="blogcomment" key={parentComment._id}>
-                <h3> {parentComment.name} <span>{new Date(parentComment.createdAt).toLocaleString()}</span></h3>
-                <h4>Topic: <span>{parentComment.title}</span></h4>
-                <p>{parentComment.contentpera}</p>
-                <button onClick={() => handleReply(parentComment._id, parentComment.name)}>Reply </button>
-                {parentComment.parent && (
-                    <span className="repliedto">Replied to {parentComment.parentName}</span>
-                )}
-                <div className="children-comments">
-                    {commentsMap.get(parentComment._id).map(childComment => (
-                        <div className="child-comment" key={childComment._id}>
-                            <h3>{childComment.name} <span>{new Date(childComment.createdAt).toLocaleString()}</span></h3>
-                            <span>Replied to {childComment.parentName}</span>
-                            <h4>Topic: <span>{childComment.title}</span></h4>
-                            <p>{childComment.contentpera}</p>
-
-
-                        </div>
-                    ))}
-
-
+        return comments
+            .filter(comment => comment.maincomment)
+            .map(parentComment => (
+                <div className="blogcomment" key={parentComment._id}>
+                    <h3>{parentComment.name} <span>{new Date(parentComment.createdAt).toLocaleString()}</span></h3>
+                    <h4>Topic: <span>{parentComment.title}</span></h4>
+                    <p>{parentComment.contentpera}</p>
+                    <button
+                        onClick={() => handleReply(parentComment._id, parentComment.name)}
+                        className="reply-button"
+                    >
+                        Reply
+                    </button>
+                    {parentComment.parent && (
+                        <span className="repliedto">{parentComment.parentName}</span>
+                    )}
+                    <div className="children-comments">
+                        {commentsMap.get(parentComment._id)?.map(childComment => (
+                            <div className="child-comment" key={childComment._id}>
+                                <h3>{childComment.name} <span>{new Date(childComment.createdAt).toLocaleString()}</span></h3>
+                                <span className="replied-to">Replied to {childComment.parentName}</span>
+                                <h4>Topic: <span>{childComment.title}</span></h4>
+                                <p>{childComment.contentpera}</p>
+                            </div>
+                        ))}
+                    </div>
                 </div>
-
-            </div>
-
-        })
-    }
+            ));
+    };
 
     return (
         <>
@@ -389,7 +411,7 @@ const BlogPage = () => {
                                     </div>
                                     <div className="blogslugcomments" ref={replyFormRef}>
                                         {newComment.parentName && (
-                                            <h2>Leave a reply to <span className="perentname">{newComment.parentName}</span> <button onClick={handleRemoveReply} className="removereplybtn"> </button></h2>
+                                            <h2>Leave a reply to <span className="perentname">{newComment.parentName}</span> <button onClick={handleRemoveReply} className="removereplybtn"> Remove reply</button></h2>
 
                                         )}
                                         {!newComment.parentName && (
@@ -437,8 +459,43 @@ const BlogPage = () => {
                                         </form>
                                     </div>
                                 </div>
+                                <div className="rightsitedetails">
+                                    <div className="rightslugsearchbar">
+                                        <input onClick={handleSearchOpen} type="text" placeholder="Search..." />
+                                        <button>
+                                            <FiSearch />
+                                        </button>
+                                    </div>
+                                    <div className="rightslugcategory">
+                                        <h2>CATEGORIES</h2>
+                                        <ul>
+                                            <Link href='/blogs/category/Next Js'><li>Next Js <span>({alldata.filter(ab => ab.blogcategory[0] === 'Next Js').length})</span></li> </Link>
+                                            <Link href='/blogs/category/Css'><li>Css <span>({alldata.filter(ab => ab.blogcategory[0] === 'Css').length})</span></li> </Link>
+                                            <Link href='/blogs/category/Node Js'><li>Node Js <span>({alldata.filter(ab => ab.blogcategory[0] === 'Node Js').length})</span></li> </Link>
+                                            <Link href='/blogs/category/Flutter Dev'><li>Flutter Dev <span>({alldata.filter(ab => ab.blogcategory[0] === 'Flutter Dev').length})</span></li> </Link>
+                                        </ul>
+                                    </div>
+                                    <div className="rightrecentpost">
+                                        <h2>RECENT POST</h2>
+                                        {alldata.slice(0, 3).map((blog) => {
+                                            return <Link key={blog._id} href={`/blogs/${blog.slug}`} className="rightrecentp">
+                                                <img src={blog.images[0]} alt="" />
+                                                <div>
+                                                    <h3>{blog.title}</h3>
+                                                    <h4 className="mt-1">
+                                                        {blog.tags.map((cat) => {
+                                                            return <span key={cat}>{cat}</span>
+                                                        })}
+                                                    </h4>
+                                                </div>
+                                            </Link>
+                                        })}
+
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                        {searchInput ? <Blogsearch cls={handleSearchClose} /> : null}
                     </div>
                 )}
             </div >

@@ -15,13 +15,13 @@ const extractFirstParagraph = (markdown) => {
 
 export default function Blogsearch(props) {
 
-    const { allwork } = useFetchData('/api/blogs');  // Assuming useFetchData returns an object with allwork and loading
+    const { alldata = [], loading } = useFetchData('/api/blogs');  // Assuming useFetchData returns an object with allwork and loading
 
     const [searchResult, setSearchResult] = useState(null);
     const [blogtitle, setBlogtitle] = useState('');  // blogtitle should be initialized as a string
 
     // filter for published blogs required
-    const publishedData = allwork?.filter(ab => ab.status === 'publish') || [];
+    const publishedData = alldata.filter(ab => ab.status === 'publish') || [];
 
 
     // Function to handle search
@@ -37,11 +37,13 @@ export default function Blogsearch(props) {
 
         setSearchResult(filteredblogs);  // setSearchResult should be used to update searchResult state
 
-    }, [blogtitle, allwork]);  // Include allwork in dependencies to ensure useEffect updates when data changes
+    }, [blogtitle, alldata]);  // Include allwork in dependencies to ensure useEffect updates when data changes
 
     const handleBlogClick = () => {
         setBlogtitle('');  // This clears the input field when a blog is clicked
     };
+
+    if (loading) return <p>Loading...</p>
 
 
     return <>
