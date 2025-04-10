@@ -1,4 +1,3 @@
-
 import { SlCalender } from "react-icons/sl";
 import { CiRead } from "react-icons/ci";
 import { RiFacebookFill } from "react-icons/ri";
@@ -126,9 +125,9 @@ const BlogPage = () => {
             parent: parentCommentId,
             parentName: parentName,
             maincomment: false
-        })
+        });
         if (replyFormRef.current) {
-            replyFormRef.current.scrollInfoView({ behavior: 'smooth' })
+            replyFormRef.current.scrollIntoView({ behavior: 'smooth' }); // Fixed typo: scrollInfoView -> scrollIntoView
         }
     }
 
@@ -141,19 +140,25 @@ const BlogPage = () => {
         })
     }
 
-    const updateChildrenComments = () => {
+    const updateChildrenComments = (comments, parentId, newComment) => {
+if (!comments) return [];
+        
         return comments.map(comment => {
             if (comment._id === parentId) {
-                
-            } else if (comment.children && comment.children.length > 0){
+return {
+                    ...comment,
+                    children: [...(comment.children || []), newComment]
+                };
+            } else if (comment.children && comment.children.length > 0) {
                 return {
                     ...comment,
-                    children: updateChildrenComments (comment.children, parentId, newComment)
-                }
+                    children: updateChildrenComments(comment.children, parentId, newComment)
+                };
             }
             return comment;
-        })
-    }
+        });
+    };
+
     if (loading) {
         return (
             <div className="flex flex-center wh_100">
@@ -250,18 +255,44 @@ const BlogPage = () => {
         const commentsMap = new Map();
         comments.forEach(comment => {
             if (comment.maincomment) {
-                commentsMap.set( comment._id, [])
-            } 
-        })
+                commentsMap.set(comment._id, []);
+            }
+        });
 
         comments.forEach(comment => {
             if (!comment.maincomment && comment.parent) {
                 if (commentsMap.has(comment.parent)) {
                     commentsMap.get(comment.parent).push(comment);
-                }  
-            } 
+                }
+            }
         });
-    }
+
+        return comments
+.filter(comment => comment.maincomment) // Fixed typo: maincommnet -> maincomment
+.map(parentComment => (  // Added parentheses for implicit return
+            <div className="blogcomment" key={parentComment._id}>
+                <h3>{parentComment.name} <span>{new Date(parentComment.createdAt).toLocaleString()}</span></h3>
+                <h4>Topic: <span>{parentComment.title}</span></h4>
+                <p>{parentComment.contentpera}</p>
+                <button 
+onClick={() => handleReply(parentComment._id, parentComment.name)}
+                        className="reply-button"
+                    >
+                        Reply
+                    </button>
+                <div className="children-comments">
+                    {commentsMap.get(parentComment._id)?.map(childComment => (
+                        <div className="child-comment" key={childComment._id}>
+                            <h3>{childComment.name} <span>{new Date(childComment.createdAt).toLocaleString()}</span></h3>
+                            <span className="replied-to">Replied to {childComment.parentName}</span>
+                            <h4>Topic: <span>{childComment.title}</span></h4>
+                            <p>{childComment.contentpera}</p>
+                        </div>
+                    ))}
+</div>
+                </div>
+));
+    };
 
     return (
         <>
@@ -355,49 +386,58 @@ const BlogPage = () => {
                                     </div>
 
                                     <div className="blogusecomments">
-                                        <h2>Comment</h2>
-                                        { }
+                                        <h2>Comments</h2>
+                                        {renderComments(blogData.comments)}
                                     </div>
-                                    <div className="blogslugcomments">
-                                        { }
+                                    <div className="blogslugcomments" ref={replyFormRef}>
+                                        {newComment.parentName && (
+                                            <h2>Leave a reply to <span className="perentname">{newComment.parentName}</span> <button onClick={handleRemoveReply} className="removereplybtn"> </button></h2>
 
-                                        { }
+                                        )}
+                                        {!newComment.parentName && (
+                                            <h2>Leave a reply </h2>
+
+                                        )}
+
+
+
+                                        <p>Your email address will not be publish. Required fileds are marked *</p>
+                                        <form className="leaveareplyform" onSubmit={handleCommentSubmit}>
+                                            <div className="nameemailcomment">
+                                                <input
+                                                    type="text"
+                                                    placeholder="Enter Name"
+                                                    value={newComment.name}
+                                                    onChange={(e) => setNewComment({ ...newComment, name: e.target.value })}
+                                                />
+                                                <input
+                                                    type="email"
+                                                    placeholder="Enter Email"
+                                                    value={newComment.email}
+                                                    onChange={(e) => setNewComment({ ...newComment, email: e.target.value })}
+                                                />
+                                            </div>
+                                            <input
+                                                type="text"
+                                                placeholder="Enter Title"
+                                                value={newComment.title}
+                                                onChange={(e) => setNewComment({ ...newComment, title: e.target.value })}
+                                            />
+                                            <textarea
+                                                name=""
+                                                rows={4}
+                                                placeholder="Enter Your Comments"
+                                                id="textcomments"
+                                                value={newComment.contentpera}
+                                                onChange={(e) => setNewComment({ ...newComment, contentpera: e.target.value })}
+                                            ></textarea>
+                                            <div className="flex gap-2">
+                                                <button type="submit">Post Comment</button>
+                                                <p>{messageok}</p>
+                                            </div>
+
+                                        </form>
                                     </div>
-                                    <p>Your email address will not be publish. Required fileds are marked *</p>
-                                    <form className="leaveareplyform" onSubmit={handleCommentSubmit}>
-                                        <div className="nameemailcomment">
-                                            <input 
-                                            type="text" 
-                                            placeholder="Enter Name" 
-                                            value={newComment.name}
-                                            onChange={(e) => setNewComment({...newComment, name: e.target.value})}
-                                            />
-                                            <input 
-                                            type="email" 
-                                            placeholder="Enter Email" 
-                                            value={newComment.email}
-                                            onChange={(e) => setNewComment({...newComment, email: e.target.value})}
-                                            />
-                                        </div>
-                                        <input 
-                                        type="text" 
-                                        placeholder="Enter Title" 
-                                        value={newComment.title}
-                                        onChange={(e) => setNewComment({...newComment, title: e.target.value})}
-                                        />
-                                        <textarea 
-                                        name="" 
-                                        rows={4} 
-                                        placeholder="Enter Your Comments" 
-                                        id="textcomments"
-                                        value={newComment.contentpera}
-                                        onChange={(e) => setNewComment({...newComment, contentpera: e.target.value})}
-                                        ></textarea>
-                                        <div className="flex gap-2">
-                                            <button type="submit">Post Comment</button>
-                                            <p>{messageok}</p>
-                                        </div>
-                                    </form>
                                 </div>
                             </div>
                         </div>
