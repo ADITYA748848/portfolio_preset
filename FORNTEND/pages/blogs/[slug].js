@@ -1,3 +1,4 @@
+
 import { SlCalender } from "react-icons/sl";
 import { CiRead } from "react-icons/ci";
 import { RiFacebookFill } from "react-icons/ri";
@@ -70,18 +71,18 @@ const BlogPage = () => {
             if (newComment.parent) {
                 setBlogData(prevData => {
                     const updatedComments = prevData.comments.map(Comment => {
-                        if (comment._id === newComment.parent) {
+                        if (Comment._id === newComment.parent) {
                             return {
-                                ...comment,
-                                children: [...comment.children, response.data]
+                                ...Comment,
+                                children: [...Comment.children, response.data]
                             }
-                        } else if (comment.children && comment.children.length > 0) {
+                        } else if (Comment.children && Comment.children.length > 0) {
                             return {
-                                ...comment,
-                                children: updateChildrenComments(comment.children, newComment.parent, response.data)
+                                ...Comment,
+                                children: updateChildrenComments(Comment.children, newComment.parent, response.data)
                             };
                         }
-                        return comment;
+                        return Comment;
                     });
 
                     return {
@@ -125,9 +126,9 @@ const BlogPage = () => {
             parent: parentCommentId,
             parentName: parentName,
             maincomment: false
-        });
+        })
         if (replyFormRef.current) {
-            replyFormRef.current.scrollIntoView({ behavior: 'smooth' }); // Fixed typo: scrollInfoView -> scrollIntoView
+            replyFormRef.current.scrollInfoView({ behavior: 'smooth' })
         }
     }
 
@@ -140,25 +141,19 @@ const BlogPage = () => {
         })
     }
 
-    const updateChildrenComments = (comments, parentId, newComment) => {
-if (!comments) return [];
-        
+    const updateChildrenComments = () => {
         return comments.map(comment => {
             if (comment._id === parentId) {
-return {
-                    ...comment,
-                    children: [...(comment.children || []), newComment]
-                };
+
             } else if (comment.children && comment.children.length > 0) {
                 return {
                     ...comment,
                     children: updateChildrenComments(comment.children, parentId, newComment)
-                };
+                }
             }
             return comment;
-        });
-    };
-
+        })
+    }
     if (loading) {
         return (
             <div className="flex flex-center wh_100">
@@ -257,7 +252,7 @@ return {
             if (comment.maincomment) {
                 commentsMap.set(comment._id, []);
             }
-        });
+        })
 
         comments.forEach(comment => {
             if (!comment.maincomment && comment.parent) {
@@ -267,32 +262,35 @@ return {
             }
         });
 
-        return comments
-.filter(comment => comment.maincomment) // Fixed typo: maincommnet -> maincomment
-.map(parentComment => (  // Added parentheses for implicit return
+
+        return comments.filter(comment => comment.maincommnet).map(parentComment => {
             <div className="blogcomment" key={parentComment._id}>
-                <h3>{parentComment.name} <span>{new Date(parentComment.createdAt).toLocaleString()}</span></h3>
+                <h3> {parentComment.name} <span>{new Date(parentComment.createdAt).toLocaleString()}</span></h3>
                 <h4>Topic: <span>{parentComment.title}</span></h4>
                 <p>{parentComment.contentpera}</p>
-                <button 
-onClick={() => handleReply(parentComment._id, parentComment.name)}
-                        className="reply-button"
-                    >
-                        Reply
-                    </button>
+                <button onClick={() => handleReply(parentComment._id, parentComment.name)}>Reply </button>
+                {parentComment.parent && (
+                    <span className="repliedto">Replied to {parentComment.parentName}</span>
+                )}
                 <div className="children-comments">
-                    {commentsMap.get(parentComment._id)?.map(childComment => (
+                    {commentsMap.get(parentComment._id).map(childComment => (
                         <div className="child-comment" key={childComment._id}>
                             <h3>{childComment.name} <span>{new Date(childComment.createdAt).toLocaleString()}</span></h3>
-                            <span className="replied-to">Replied to {childComment.parentName}</span>
+                            <span>Replied to {childComment.parentName}</span>
                             <h4>Topic: <span>{childComment.title}</span></h4>
                             <p>{childComment.contentpera}</p>
+
+
                         </div>
                     ))}
-</div>
+
+
                 </div>
-));
-    };
+
+            </div>
+
+        })
+    }
 
     return (
         <>
