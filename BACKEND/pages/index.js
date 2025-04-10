@@ -168,8 +168,8 @@ export default function Home() {
                   <td>{blogsData.filter(dat => dat.blogcategory[0] === "Css").length}</td>
                 </tr>
                 <tr>
-                  <td>Node Js</td>
-                  <td>{blogsData.filter(dat => dat.blogcategory[0] === "Node js").length}</td>
+                  <td>Kotlin</td>
+                  <td>{blogsData.filter(dat => dat.blogcategory[0] === "Kotlin").length}</td>
                 </tr>
                 <tr>
                   <td>Flutter Dev</td>

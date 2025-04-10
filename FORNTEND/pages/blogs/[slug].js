@@ -469,9 +469,9 @@ const BlogPage = () => {
                                     <div className="rightslugcategory">
                                         <h2>CATEGORIES</h2>
                                         <ul>
-                                            <Link href='/blogs/category/Next Js'><li>Next Js <span>({alldata.filter(ab => ab.blogcategory[0] === 'Next Js').length})</span></li> </Link>
+                                            <Link href='/blogs/category/Next js'><li>Next Js <span>({alldata.filter(ab => ab.blogcategory[0] === 'Next js').length})</span></li></Link>
                                             <Link href='/blogs/category/Css'><li>Css <span>({alldata.filter(ab => ab.blogcategory[0] === 'Css').length})</span></li> </Link>
-                                            <Link href='/blogs/category/Node Js'><li>Node Js <span>({alldata.filter(ab => ab.blogcategory[0] === 'Node Js').length})</span></li> </Link>
+                                            <Link href='/blogs/category/Kotlins'><li>Kotlin <span>({alldata.filter(ab => ab.blogcategory[0] === 'Kotlin').length})</span></li> </Link>
                                             <Link href='/blogs/category/Flutter Dev'><li>Flutter Dev <span>({alldata.filter(ab => ab.blogcategory[0] === 'Flutter Dev').length})</span></li> </Link>
                                         </ul>
                                     </div>

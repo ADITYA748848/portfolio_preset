@@ -273,7 +273,7 @@ export default function Home() {
 
       {/* Projects */}
       <section className="projects">
-        <div className="container">
+        <div className="container" >
           <div className="project_titles">
             <h2> My Recent Works </h2>
             <p>We put your ideas and thus your wishes in the form of a unique web project that inspires you and you customers .</p>
@@ -287,13 +287,13 @@ export default function Home() {
           </div>
 
           <div className="projects_cards" >
-            {loading ? <div className="flex flex-center wh_100" ><Spinner /></div> : (
+            {loading ? <div className="flex flex-center wh_100"  ><Spinner /></div> : (
               filteredProjects.length === 0 ? (
 
-                <h1 className="w-100 flex flex-center mt-3">No Project Found</h1>
+                <h1 className="w-100 flex flex-center mt-3" >No Project Found</h1>
               ) : (
                 filteredProjects.slice(0, 4).map((pro) => (
-                  <Link href='/' key={pro._id} className="procard">
+                  <Link href='/' key={pro._id} className="procard" data-aos="flip-left" data-aos-easing="ease-out-cubic" data-aos-duration="2000">
                     <div className="proimgbox" >
                       <img src={pro.images[0]} alt={pro.title} />
                     </div>
@@ -316,7 +316,7 @@ export default function Home() {
       {/* Experience study */}
       <section className="exstudy">
         <div className="container flex flex-left flex-sb">
-          <div className="experience">
+          <div className="experience" data-aos="flip-right">
             <div className="experience_title flxe gap-1">
               <LuMedal />
               <h2>My Experience</h2>
@@ -344,7 +344,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className="experience">
+          <div className="experience" data-aos="flip-left">
             <div className="experience_title flxe gap-1">
               <PiGraduationCap />
               <h2>My Education</h2>
@@ -384,42 +384,42 @@ export default function Home() {
           </div>
           <div className="myskils_cards">
             <div className="mys_card">
-              <div className="mys_inner">
+              <div className="mys_inner" data-aos="fade-right">
                 <img src="/img/python.svg" alt="python" />
                 <h2>85%</h2>
               </div>
               <p className="text-center">Python</p>
             </div>
             <div className="mys_card">
-              <div className="mys_inner">
+              <div className="mys_inner" data-aos="fade-right">
                 <img src="/img/firebase.svg" alt="firebase" />
                 <h2>80%</h2>
               </div>
               <p className="text-center">Firebase</p>
             </div>
             <div className="mys_card">
-              <div className="mys_inner">
+              <div className="mys_inner" data-aos="fade-right">
                 <img src="/img/mongodb.svg" alt="mongodb" />
                 <h2>90%</h2>
               </div>
               <p className="text-center">MongoDB</p>
             </div>
             <div className="mys_card">
-              <div className="mys_inner">
-                <img src="/img/redux.svg" alt="redux" />
+              <div className="mys_inner" data-aos="fade-left">
+                <img src="/img/redux.svg" alt="redux"  />
                 <h2>60%</h2>
               </div>
               <p className="text-center">Redux</p>
             </div>
             <div className="mys_card">
-              <div className="mys_inner">
+              <div className="mys_inner" data-aos="fade-left">
                 <img src="/img/react.svg" alt="react" />
                 <h2>87%</h2>
               </div>
               <p className="text-center">React</p>
             </div>
             <div className="mys_card">
-              <div className="mys_inner">
+              <div className="mys_inner" data-aos="fade-left">
                 <img src="/img/js.svg" alt="js" />
                 <h2>91%</h2>
               </div>
@@ -432,7 +432,7 @@ export default function Home() {
 
       {/* Recent Blogs */}
       <section className="recentblogs">
-        <div className="container">
+        <div className="container" data-aos="fade-up">
           <div className="myskills_title">
             <h2>Recent Blogs</h2>
             <p>We put your ideas and thus your wishes in the form of a unique web project that inspires you and you customers</p>

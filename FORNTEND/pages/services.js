@@ -17,9 +17,9 @@ export default function services() {
                 </div>
             </div>
             <div className="centerservices">
-                <div className="container">
-                    <div className="cservicesbox">
-                        <div className="csservice">
+                <div className="container" >
+                    <div className="cservicesbox" >
+                        <div className="csservice" data-aos="flip-left" data-aos-easing="ease-out-cubic" data-aos-duration="2000">
                             <span>01</span>
                             <div>
                                 <h2>Web Develpment</h2>
@@ -34,7 +34,7 @@ export default function services() {
                             </ul>
                             <p>I am very good in web development offering services, i offer reliable web developement services to generate the remarkable results which your business need</p>
                         </div>
-                        <div className="csservice">
+                        <div className="csservice" data-aos="flip-left" data-aos-easing="ease-out-cubic" data-aos-duration="2000">
                             <span>01</span>
                             <div>
                                 <h2>Web Develpment</h2>
@@ -49,7 +49,7 @@ export default function services() {
                             </ul>
                             <p>I am very good in web development offering services, i offer reliable web developement services to generate the remarkable results which your business need</p>
                         </div>
-                        <div className="csservice">
+                        <div className="csservice" data-aos="flip-left" data-aos-easing="ease-out-cubic" data-aos-duration="2000">
                             <span>01</span>
                             <div>
                                 <h2>Web Develpment</h2>
@@ -64,7 +64,7 @@ export default function services() {
                             </ul>
                             <p>I am very good in web development offering services, i offer reliable web developement services to generate the remarkable results which your business need</p>
                         </div>
-                        <div className="csservice">
+                        <div className="csservice" data-aos="flip-left" data-aos-easing="ease-out-cubic" data-aos-duration="2000">
                             <span>01</span>
                             <div>
                                 <h2>Web Develpment</h2>
@@ -79,7 +79,7 @@ export default function services() {
                             </ul>
                             <p>I am very good in web development offering services, i offer reliable web developement services to generate the remarkable results which your business need</p>
                         </div>
-                        <div className="csservice">
+                        <div className="csservice" data-aos="flip-left" data-aos-easing="ease-out-cubic" data-aos-duration="2000">
                             <span>01</span>
                             <div>
                                 <h2>Web Develpment</h2>
@@ -94,7 +94,7 @@ export default function services() {
                             </ul>
                             <p>I am very good in web development offering services, i offer reliable web developement services to generate the remarkable results which your business need</p>
                         </div>
-                        <div className="csservice">
+                        <div className="csservice" data-aos="flip-left" data-aos-easing="ease-out-cubic" data-aos-duration="2000">
                             <span>01</span>
                             <div>
                                 <h2>Web Develpment</h2>
@@ -118,8 +118,8 @@ export default function services() {
                         <h3><img src="/img/chevron_right.png" alt="" /> PRICING PLAN</h3>
                         <h2>Pricing My Work</h2>
                     </div>
-                    <div className="pricingcards">
-                        <div className="pricingcard">
+                    <div className="pricingcards" >
+                        <div className="pricingcard" data-aos="flip-left" data-aos-easing="ease-out-cubic" data-aos-duration="2000">
                             <h4>Life Plan</h4>
                             <p>Perfect Choice for individual</p>
                             <h2>$29.00 <span>Monthly</span></h2>
@@ -134,7 +134,7 @@ export default function services() {
                                 </ul>
                             </div>
                         </div>
-                        <div className="pricingcard">
+                        <div className="pricingcard" data-aos="flip-left" data-aos-easing="ease-out-cubic" data-aos-duration="2000">
                             <h4>Premium Plan</h4>
                             <p>Perfect Choice for individual</p>
                             <h2>$59.00 <span>Monthly</span></h2>
@@ -149,7 +149,7 @@ export default function services() {
                                 </ul>
                             </div>
                         </div>
-                        <div className="pricingcard">
+                        <div className="pricingcard" data-aos="flip-left" data-aos-easing="ease-out-cubic" data-aos-duration="2000">
                             <h4>Pro Plan</h4>
                             <p>Perfect Choice for individual</p>
                             <h2>$79.00 <span>Monthly</span></h2>
