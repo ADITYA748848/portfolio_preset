@@ -5,7 +5,7 @@ const CommentSchema = new Schema({
     email : {type : String},
     title : {type : String},
     contentpera : {type : String},
-    maincomment : {type : Boolean },
+    maincomment: { type: Boolean, default: true },
     createdAt : {type : String, default: Date.now},
     blog : {type : Schema.Types.ObjectId, ref: 'Blog', required : true},
     parent :{type : Schema.Types.ObjectId, ref: 'Comment'},
