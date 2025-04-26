@@ -114,7 +114,7 @@ export default function projectslug() {
                             </div>
                             <div>
                                 <h3>Designer</h3>
-                                <h2>Sachin Kumar</h2>
+                                <h2>Aditya RAj</h2>
                             </div>
                         </div>
                     </div>

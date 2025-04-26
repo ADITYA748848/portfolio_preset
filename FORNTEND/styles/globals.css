@@ -1453,6 +1453,7 @@ header.sticky {
     position: relative;
     padding: 120px 1rem;
     background: #0f0715;
+    
 }
 
 .dark .myskills {
@@ -1496,12 +1497,30 @@ header.sticky {
 
 .myskils_cards {
     width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); /* 6 columns */
     gap: 1rem;
     margin-top: 3rem;
-}
+  }
+  @media (max-width: 1200px) {
+    .myskils_cards {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .myskils_cards {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .myskils_cards {
+      grid-template-columns: repeat(2, 2fr);
+    }
+  }
+  
+  
 
 .mys_card {
     max-width: 180px;

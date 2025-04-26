@@ -12,10 +12,10 @@ export default function Footer() {
                 </div>
                 <div className="ul flex gap-2">
                     <li><Link href='/services'>Services</Link></li>
-                    <li><Link href='/services'>Works</Link></li>
-                    <li><Link href='/services'>Resume</Link></li>
-                    <li><Link href='/services'>Skills</Link></li>
-                    <li><Link href='/services'>Testimonial</Link></li>
+                    <li><Link href='/blogs'>Blogs</Link></li>
+                    <li><Link href='/'>Resume</Link></li>
+                    <li><Link href='/shop'>Shop</Link></li>
+                    <li><Link href='/projects'>Projects</Link></li>
                     <li><Link href='/contact'>Contact</Link></li>
                 </div>
                 <ul className="hero_social">
@@ -24,7 +24,7 @@ export default function Footer() {
                     <li><a href="/" target="_blank"><GrLinkedinOption/></a></li>
                     <li><a href="/" target="_blank"><FaGithub/></a></li>
                 </ul>
-                <div className="copyrights">&copy; 2025 All Right Reserved By <span>AiCodinghub</span></div>
+                <div className="copyrights">&copy; 2025 All Right Reserved By <span>Aditya Raj</span></div>
             </div>
         </footer>
     </>

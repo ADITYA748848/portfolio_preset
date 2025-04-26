@@ -25,7 +25,7 @@ export default function Setting() {
                         <div className="w-100">
                             <div className="flex flex-sb flex-left mt-2">
                                 <h2>My Profile</h2>
-                                <h3>Sachin Kumar <br /> App Developer </h3>
+                                <h3>Aditya Raj <br /> App Developer </h3>
                             </div>
                             <div className="flex flex-sb mt-2">
                                 <h3>Phone:</h3>

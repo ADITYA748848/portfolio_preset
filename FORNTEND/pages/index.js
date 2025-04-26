@@ -100,7 +100,7 @@ export default function Home() {
     return new Intl.DateTimeFormat('en-US', options).format(date)
   }
 
-  const textArray = ["Web Developer", "Content Creator", "Full Stack Dev"];
+  const textArray = ["Web Developer", "DevOps ", "Full Stack Dev"];
   const [text, setText] = useState('');
   const [textIndex, setTextIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
@@ -188,7 +188,7 @@ export default function Home() {
                   <li> < a href="/"><FaTwitter /></a></li>
                   <li> < a href="/"><LiaBasketballBallSolid /></a></li>
                   <li> < a href="/"><GrLinkedinOption /></a></li>
-                  <li> < a href="/"><FaGithub /></a></li>
+                  <li> < a href="https://github.com/ADITYA748848"><FaGithub /></a></li>
 
                 </ul>
               </div>
@@ -273,7 +273,7 @@ export default function Home() {
 
       {/* Projects */}
       <section className="projects">
-        <div className="container">
+        <div className="container" >
           <div className="project_titles">
             <h2> My Recent Works </h2>
             <p>We put your ideas and thus your wishes in the form of a unique web project that inspires you and you customers .</p>
@@ -287,13 +287,13 @@ export default function Home() {
           </div>
 
           <div className="projects_cards" >
-            {loading ? <div className="flex flex-center wh_100" ><Spinner /></div> : (
+            {loading ? <div className="flex flex-center wh_100"  ><Spinner /></div> : (
               filteredProjects.length === 0 ? (
 
-                <h1 className="w-100 flex flex-center mt-3">No Project Found</h1>
+                <h1 className="w-100 flex flex-center mt-3" >No Project Found</h1>
               ) : (
                 filteredProjects.slice(0, 4).map((pro) => (
-                  <Link href='/' key={pro._id} className="procard">
+                  <Link href='/' key={pro._id} className="procard" data-aos="flip-left" data-aos-easing="ease-out-cubic" data-aos-duration="2000">
                     <div className="proimgbox" >
                       <img src={pro.images[0]} alt={pro.title} />
                     </div>
@@ -316,7 +316,7 @@ export default function Home() {
       {/* Experience study */}
       <section className="exstudy">
         <div className="container flex flex-left flex-sb">
-          <div className="experience">
+          <div className="experience" data-aos="flip-right">
             <div className="experience_title flxe gap-1">
               <LuMedal />
               <h2>My Experience</h2>
@@ -334,17 +334,17 @@ export default function Home() {
               </div>
               <div className="exper_card">
                 <span>2024-Present</span>
-                <h3>YouTube Content Creation</h3>
-                <p>Full Stack App/Web Developer</p>
+                <h3>Freelance</h3>
+                <p>Marketing</p>
               </div>
               <div className="exper_card">
                 <span>2025-Present</span>
                 <h3>Developing Phase</h3>
-                <p>Unreal Engine 5 Game development</p>
+                <p>AI developer</p>
               </div>
             </div>
           </div>
-          <div className="experience">
+          <div className="experience" data-aos="flip-left">
             <div className="experience_title flxe gap-1">
               <PiGraduationCap />
               <h2>My Education</h2>
@@ -353,12 +353,12 @@ export default function Home() {
               <div className="exper_card">
                 <span>2020-2022</span>
                 <h3>Higher Secondary Education</h3>
-                <p>Koshi College Khagaria</p>
+                <p>S.G.D.M College Memorial ,Patna</p>
               </div>
               <div className="exper_card">
                 <span>2022-2023</span>
                 <h3>IIT Preparation</h3>
-                <p>Allen Kota</p>
+                <p>Physics Wallah (PW),  Patna</p>
               </div>
               <div className="exper_card">
                 <span>2023-2027</span>
@@ -384,46 +384,89 @@ export default function Home() {
           </div>
           <div className="myskils_cards">
             <div className="mys_card">
-              <div className="mys_inner">
+              <div className="mys_inner" data-aos="fade-right">
                 <img src="/img/python.svg" alt="python" />
                 <h2>85%</h2>
               </div>
               <p className="text-center">Python</p>
             </div>
             <div className="mys_card">
-              <div className="mys_inner">
-                <img src="/img/firebase.svg" alt="firebase" />
-                <h2>80%</h2>
+              <div className="mys_inner" data-aos="fade-right">
+                <img src="/img/cpp.png" alt="firebase" />
+                <h2>95%</h2>
               </div>
-              <p className="text-center">Firebase</p>
+              <p className="text-center">CPP</p>
             </div>
             <div className="mys_card">
-              <div className="mys_inner">
-                <img src="/img/mongodb.svg" alt="mongodb" />
+              <div className="mys_inner" data-aos="fade-right">
+                <img src="/img/5.svg" alt="mongodb" />
+                <h2>92%</h2>
+              </div>
+              <p className="text-center">Java</p>
+            </div>
+            <div className="mys_card">
+              <div className="mys_inner" data-aos="fade-left">
+                <img src="/img/js.svg" alt="redux"  />
+                <h2>98%</h2>
+              </div>
+              <p className="text-center">JavaScript</p>
+            </div>
+            <div className="mys_card">
+              <div className="mys_inner" data-aos="fade-left">
+                <img src="/img/react.svg" alt="react" />
+                <h2>93%</h2>
+              </div>
+              <p className="text-center">React</p>
+            </div>
+            <div className="mys_card">
+              <div className="mys_inner" data-aos="fade-left">
+                <img src="/img/next.svg" alt="react" />
+                <h2>90%</h2>
+              </div>
+              <p className="text-center">Next-js</p>
+            </div>
+            
+            <div className="mys_card">
+              <div className="mys_inner" data-aos="fade-left">
+                <img src="/img/mongodb.svg" alt="react" />
                 <h2>90%</h2>
               </div>
               <p className="text-center">MongoDB</p>
             </div>
             <div className="mys_card">
-              <div className="mys_inner">
-                <img src="/img/redux.svg" alt="redux" />
-                <h2>60%</h2>
+              <div className="mys_inner" data-aos="fade-left">
+                <img src="/img/8.svg" alt="react" />
+                <h2>90%</h2>
+              </div>
+              <p className="text-center">Tailwind</p>
+            </div>
+            <div className="mys_card">
+              <div className="mys_inner" data-aos="fade-left">
+                <img src="/img/4.svg " alt="react" />
+                <h2>98%</h2>
+              </div>
+              <p className="text-center">Github</p>
+            </div>
+            <div className="mys_card">
+              <div className="mys_inner" data-aos="fade-left">
+                <img src="/img/3.svg " alt="react" />
+                <h2>90%</h2>
+              </div>
+              <p className="text-center">Android Studio</p>
+            </div>
+            <div className="mys_card">
+              <div className="mys_inner" data-aos="fade-left">
+                <img src="/img/firebase.svg " alt="react" />
+                <h2>85%</h2>
+              </div>
+              <p className="text-center">Firebase</p>
+            </div>
+            <div className="mys_card">
+              <div className="mys_inner" data-aos="fade-left">
+                <img src="/img/redux.svg" alt="js" />
+                <h2>65%</h2>
               </div>
               <p className="text-center">Redux</p>
-            </div>
-            <div className="mys_card">
-              <div className="mys_inner">
-                <img src="/img/react.svg" alt="react" />
-                <h2>87%</h2>
-              </div>
-              <p className="text-center">React</p>
-            </div>
-            <div className="mys_card">
-              <div className="mys_inner">
-                <img src="/img/js.svg" alt="js" />
-                <h2>91%</h2>
-              </div>
-              <p className="text-center">JavaScript</p>
             </div>
           </div>
         </div>
@@ -432,7 +475,7 @@ export default function Home() {
 
       {/* Recent Blogs */}
       <section className="recentblogs">
-        <div className="container">
+        <div className="container" data-aos="fade-up">
           <div className="myskills_title">
             <h2>Recent Blogs</h2>
             <p>We put your ideas and thus your wishes in the form of a unique web project that inspires you and you customers</p>

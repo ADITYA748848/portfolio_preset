@@ -48,7 +48,7 @@ export default function projects() {
                                 <h1 className="w-100 flex flex-center mt-3">No Project Found</h1>
                             ) : (
                                 filteredProjects.map((pro) => (
-                                    <Link href={`/projects/${pro.slug}`} key={pro._id} className="procard">
+                                    <Link href={`/projects/${pro.slug}`} key={pro._id} className="procard" data-aos="flip-left" data-aos-easing="ease-out-cubic" data-aos-duration="2000">
                                         <div className="proimgbox">
                                             <img src={pro.images[0]} alt={pro.title} />
                                         </div>
