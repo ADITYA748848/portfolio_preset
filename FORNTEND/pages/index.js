@@ -183,7 +183,10 @@ export default function Home() {
               </div>
               <div className=" lead" data-aos="fade-up"> I break down complex user experience problems to create integritiy focussed solution that connect billions of people .</div>
               <div className=" hero_btn_box" data-aos="fade-up">
-                <Link href='/' download={'/img/resume.pdf'} className='download_cv'>Download CV <BiDownload /></Link>
+               
+                <a href="/img/resume.pdf" download className="download_cv">
+                  Download CV <BiDownload />
+                </a>
                 <ul className="hero_social">
                   <li> < a href="/"><FaTwitter /></a></li>
                   <li> < a href="/"><LiaBasketballBallSolid /></a></li>
