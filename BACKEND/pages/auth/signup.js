@@ -1,3 +1,8 @@
+import React from 'react';
+
+export default function SignupPage() {
+  return <div>Signup Page</div>;
+}
 // // import { useSession } from "next-auth/react";
 // import { useRouter } from "next/router";
 // import { useEffect } from "react";

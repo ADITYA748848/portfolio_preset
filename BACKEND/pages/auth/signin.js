@@ -1,3 +1,8 @@
+import React from 'react';
+
+export default function SigninPage() {
+  return <div>Signin Page</div>;
+}
 // 'use client'
 
 // import Spinner from "@/components/Spinner";
