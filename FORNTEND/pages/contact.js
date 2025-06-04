@@ -78,7 +78,7 @@ export default function contact() {
                             <ul>
                                 <li><FaPhoneVolume /> <span>Phone: <a href="tel:+123456789" target="_blank">+91-123456789</a></span></li>
                                 <li><MdEmail /> <span>Email: <a href="mailto:adityaraj5138@gmail.com" target="_blank">adityaraj5138@gmail.com</a></span></li>
-                                <li><GrLinkedin /> <span>Linkedin: <a href="https://linkedin.com/in/Aditya2004" target="_blank">Aditya2004</a></span></li>
+                                <li><GrLinkedin /> <span>Linkedin: <a href="https://www.linkedin.com/in/aditya-raj-b927b2333/" target="_blank">Aditya Raj</a></span></li>
                                 <li><FaTwitter /> <span>Twitter: <a href="https://twitter.com/Aditya" target="_blank">@Aditya</a></span></li>
                             </ul>
                         </div>
