@@ -189,8 +189,8 @@ export default function Home() {
                 </a>
                 <ul className="hero_social">
                   <li> < a href="/"><FaTwitter /></a></li>
-                  <li> < a href="/"><LiaBasketballBallSolid /></a></li>
-                  <li> < a href="/"><GrLinkedinOption /></a></li>
+                  <li> < a href="https://www.google.com/"><LiaBasketballBallSolid /></a></li>
+                  <li> < a href="https://www.linkedin.com/in/aditya-raj-b927b2333"><GrLinkedinOption /></a></li>
                   <li> < a href="https://github.com/ADITYA748848"><FaGithub /></a></li>
 
                 </ul>
